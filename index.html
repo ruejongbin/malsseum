@@ -347,6 +347,23 @@ main{padding:22px 0 140px}
 .s-story .w{font-size:12px;color:var(--muted)}
 .result .how{font-size:11px;font-weight:400;color:var(--muted);margin-left:6px}
 
+
+.loop-note{position:absolute;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom) + 150px);margin:0 auto;max-width:560px;padding:14px 16px;border-radius:14px;
+  background:rgba(10,8,18,.72);border:1px solid rgba(255,215,106,.35);color:#efe9de;font-size:15px;line-height:1.65;text-align:left;backdrop-filter:blur(6px)}
+.loop-note small{display:block;color:#ffd76a;font-size:12px;font-weight:700;margin-bottom:4px;letter-spacing:.04em}
+.why-kind{display:inline-block;padding:4px 10px;border-radius:999px;background:color-mix(in srgb,#e0a92e 18%,transparent);color:#b07a10;font-size:13px;font-weight:700;margin-bottom:12px}
+.why-pair{display:grid;gap:8px}
+.why-v{padding:12px 14px;border-radius:12px;background:var(--bg);border:1px solid var(--line)}
+.why-v .r{font-size:13px;font-weight:700;color:var(--brand);margin-bottom:4px}
+.why-v .t{font-family:var(--serif);font-size:15px;line-height:1.7}
+.why-v mark{background:var(--hl);color:inherit}
+.why-arrow{text-align:center;color:#d99a1e;font-size:18px;line-height:1}
+.why-note{margin-top:14px;padding:14px;border-radius:12px;background:color-mix(in srgb,#e0a92e 9%,var(--paper));border:1px solid color-mix(in srgb,#e0a92e 30%,transparent);font-size:15px;line-height:1.75}
+.why-note b{display:block;font-size:12px;color:#b07a10;margin-bottom:4px}
+.why-words{margin-top:12px;font-size:13px;color:var(--muted)}
+.why-words span{display:inline-block;padding:2px 9px;border-radius:999px;background:var(--chip);color:var(--ink);margin:2px 3px 0 0}
+.why-src{font-size:12px;color:var(--muted);margin-top:14px;line-height:1.6}
+
 /* long-press + animation */
 .verse{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 .verse.has-anim .vn::before{content:"✦";display:block;font-size:11px;color:var(--accent);margin-bottom:2px;animation:twinkle 2.4s ease-in-out infinite}
@@ -537,6 +554,10 @@ svg .now-lbl{fill:var(--accent);font-size:12px;font-weight:700;font-family:var(-
   <div class="sh-body" id="xrBody"></div>
 </section>
 <button class="backchip" id="backChip"></button>
+<section class="sheet" id="whySheet" aria-label="왜 연결될까요">
+  <div class="sh-head"><h2>왜 연결될까요?</h2><button class="icon" data-close>✕</button></div>
+  <div class="sh-body" id="whyBody"></div>
+</section>
 <section class="sheet" id="inviteSheet" aria-label="그룹 채팅 만들기">
   <div class="sh-head"><h2 id="invTitle">그룹 채팅 만들기</h2><button class="icon" data-close>✕</button></div>
   <div class="sh-body">
@@ -739,6 +760,39 @@ $('#mChrono').onclick=async()=>{ $('#moreMenu').classList.remove('open'); await 
 if(state.chrono) loadChrono().then(()=>{ if(BOOKS.length) render(); });
 
 
+
+/* ---------- why are these two verses connected? ---------- */
+let XN=null; const loadXN=()=> XN ? Promise.resolve(XN) : fetch('data/xnotes.json').then(r=>r.json()).then(d=>XN=d).catch(()=>XN={});
+const STEMP=['에게서','으로','에서','에게','부터','까지','하니라','하시니라','이니라','니라','하리라','리라','하시매','하매','하고','하며','하여','이라','라','은','는','이','가','을','를','에','의','와','과','도','로'];
+const STOPW=new Set(['그','이','저','것','자','때','곧','또','및','그러나','그리고','이에','내가','네가','그가','우리','너희','그들','하나','있으니라','하였더라','있더라']);
+function wordsOf(t){ return t.replace(/[^\p{L}\s]/gu,' ').split(/\s+/).map(w=>{ for(const p of STEMP){ if(w.length>p.length+1&&w.endsWith(p)) return w.slice(0,-p.length); } return w; }).filter(w=>w.length>=2&&!STOPW.has(w)&&!/^(있|하|되|이르|가로|그러|아니|말하)/.test(w)); }
+function relKind(a,b){
+  const ot=x=>x[0]<39;
+  if(ot(a)&&!ot(b)) return {k:'구약 → 신약 · 예언과 성취', d:'구약의 말씀이나 사건이 신약에서 다시 인용되거나 이루어진 것으로 연결돼요.'};
+  if(!ot(a)&&ot(b)) return {k:'신약 → 구약 · 인용과 배경', d:'신약이 구약의 말씀을 인용하거나, 그 배경이 되는 구약 장면을 가리켜요.'};
+  if(a[0]===b[0]) return {k:'같은 책 안의 연결', d:'같은 책 안에서 같은 사건이나 표현이 다시 나와요.'};
+  return {k:`같은 주제 · ${ot(a)?'구약':'신약'} 안에서`, d:'다른 책이지만 같은 주제나 비슷한 표현을 다루는 말씀이에요.'};
+}
+async function connectionInfo(from,to){
+  await loadXN();
+  const [fa,ta] = await Promise.all([from,to].map(async ([b,c,v])=>((await loadBook(b))[c]||[])[v-1]||['','']));
+  const wa=wordsOf(fa[0]), wb=new Set(wordsOf(ta[0]));
+  const common=[...new Set(wa.filter(w=>wb.has(w)||[...wb].some(x=>x.length>=2&&(x.startsWith(w)||w.startsWith(x)))))].slice(0,6);
+  const note = XN[`${from.join('-')}>${to.join('-')}`] || '';
+  return {kind:relKind(from,to), note, common, ft:fa[0], tt:ta[0]};
+}
+function showWhy(from,to,info){
+  const hl=t=>{ let h=esc(t); info.common.forEach(w=>{ h=h.replace(new RegExp(w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'),m=>`<mark>${m}</mark>`); }); return h; };
+  $('#whyBody').innerHTML = `<div class="why-kind">${info.kind.k}</div>
+    <div class="why-pair"><div class="why-v"><div class="r">${refLabel(from)}</div><div class="t">${hl(info.ft)}</div></div>
+    <div class="why-arrow">⌒ ↓</div>
+    <div class="why-v"><div class="r">${refLabel(to)}</div><div class="t">${hl(info.tt)}</div></div></div>
+    <div class="why-note"><b>${info.note?'해설':'연결 단서'}</b>${info.note ? esc(info.note) : esc(info.kind.d)+(info.common.length?` 두 구절에 함께 나오는 말을 비교해 보세요.`:'')}</div>
+    ${info.common.length?`<div class="why-words">함께 나오는 말 ${info.common.map(w=>`<span>${esc(w)}</span>`).join('')}</div>`:''}
+    <div class="why-src">구절 연결: OpenBible.info 교차참조(CC BY) · 해설은 이 앱에서 쓴 짧은 요약이라, 깊은 해석은 주석이나 설교와 함께 보세요.</div>`;
+  openSheet('#whySheet');
+}
+
 /* ---------- connected verses: hyperloop ride ---------- */
 const XR = {};
 function loadXref(b){ if(!XR[b]) XR[b]=fetch(`data/xref/${pad(b+1)}.json`).then(r=>r.json()).catch(()=>null); return XR[b]; }
@@ -760,9 +814,11 @@ async function rideTo(from,to){
   closeSheets(); clearSel();
   try{
     const mod = await import('./lib/loop.js');
-    await mod.ride({from, to, fromLabel: refLabel(from), toLabel: refLabel(to), books: BOOKS});
+    var info = await connectionInfo(from,to);
+    await mod.ride({from, to, fromLabel: refLabel(from), toLabel: refLabel(to), books: BOOKS, note: info.note || info.kind.d, kind: info.kind.k});
   }catch(e){ console.warn('ride failed', e); }
-  go(to[0],to[1],to[2]);
+  await go(to[0],to[1],to[2]);
+  if(info) setTimeout(()=>showWhy(from,to,info), 350);
   const bc=$('#backChip'); bc.textContent=`← ${refLabel(from)}(으)로 돌아가기`; bc.classList.add('show');
   bc.onclick=()=>{ bc.classList.remove('show'); go(from[0],from[1],from[2]); };
   clearTimeout(rideTo.h); rideTo.h=setTimeout(()=>bc.classList.remove('show'),12000);
@@ -890,7 +946,7 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape' && $('#anim').class
 /* ---------- visual card ---------- */
 const VIZ = {};   // book index -> data promise (only Genesis for now)
 function loadViz(b){
-  const file = {0:'01', 8:'09'}[b];
+  const file = {0:'01', 8:'09', 31:'32'}[b];
   if(!file) return Promise.resolve(null);
   if(!VIZ[b]) VIZ[b] = fetch(`data/viz-${file}.json`).then(r=>r.json()).catch(()=>null);
   return VIZ[b];
@@ -936,7 +992,7 @@ function drawViz(){
   document.querySelectorAll('#vzTabs button').forEach(b=>b.classList.toggle('on', b.dataset.t===vz.tab));
   const body = $('#vzBody');
   if(!vz.rec){
-    body.innerHTML = `<div class="vz-stage"><div class="vz-empty">그림 자료는 지금 <b>창세기</b>와 <b>사무엘상</b>에만 준비돼 있어요.<br>다른 책은 차례로 추가할 예정이에요.</div></div>`;
+    body.innerHTML = `<div class="vz-stage"><div class="vz-empty">그림 자료는 지금 <b>창세기</b> · <b>사무엘상</b> · <b>요나 1장</b>에 준비돼 있어요.<br>다른 책은 차례로 추가할 예정이에요.</div></div>`;
     return;
   }
   if(vz.tab==='people') drawPeople(body);
@@ -1059,6 +1115,7 @@ function drawTime(body){
   const TL = {
     0: [[-4004,-2347,'태초 ~ 홍수','#c9a27a'],[-2347,-1995,'홍수 이후','#8fa9b8'],[-1995,-1630,'족장 시대','#a7b48a']],
     8: [[-1170,-1094,'엘리 · 사무엘','#c9a27a'],[-1094,-1055,'사울 왕','#8fa9b8'],[-1055,-1010,'다윗 왕','#a7b48a']],
+    31: [[-930,-860,'왕국 분열 후','#c9a27a'],[-860,-790,'엘리사 · 요나','#8fa9b8'],[-790,-722,'북이스라엘 멸망까지','#a7b48a']],
   }[state.b];
   const eras = TL.map(([a,b,t,c])=>({a,b,t,c}));
   const ymin=TL[0][0], ymax=TL[TL.length-1][1];
