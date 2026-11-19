@@ -185,8 +185,73 @@ main{padding:22px 0 140px}
   header.topbar .icon{width:38px}
   .col{padding:8px 12px;gap:6px}
   .ko,.en,.mode-both .en{font-size:calc(var(--fs)*.84)}
-  .ver-chip{font-size:10.5px}
+  .ver-chip{display:none}
 }
+
+
+/* ⋮ menu */
+.more-menu{position:fixed;top:calc(env(safe-area-inset-top) + 78px);right:max(12px,calc(50vw - 520px + 12px));z-index:45;background:var(--paper);border-radius:14px;
+  box-shadow:0 12px 36px rgba(0,0,0,.2);padding:6px;display:none;min-width:250px}
+.more-menu.open{display:block}
+.more-menu button{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:11px 12px;border-radius:10px}
+.more-menu button:hover{background:var(--chip)}
+.more-menu svg{width:22px;height:22px;stroke:var(--brand);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.more-menu b{display:block;font-size:15px}
+.more-menu small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+/* chronological storyline */
+.ch-intro{font-size:14px;color:var(--muted);line-height:1.7;margin:0 0 14px}
+.ch-start{display:flex;gap:8px;margin-bottom:18px}
+.ch-start button{flex:1;padding:12px;border-radius:12px;font-weight:500;font-size:14px}
+.ch-start .pri{background:var(--brand);color:#fff}
+.ch-start .sec{background:var(--chip)}
+.ch-era{position:relative;padding-left:26px;margin-bottom:6px}
+.ch-era::before{content:"";position:absolute;left:8px;top:6px;bottom:-6px;width:2px;background:var(--line)}
+.ch-era h3{margin:0 0 8px -26px;font-size:15px;display:flex;align-items:center;gap:10px}
+.ch-era h3 i{width:18px;height:18px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 4px color-mix(in srgb,var(--brand) 18%,transparent);flex:0 0 auto}
+.ch-seg{display:block;width:100%;text-align:left;padding:11px 14px;border-radius:12px;background:var(--bg);margin-bottom:8px;border:1px solid transparent}
+.ch-seg:hover{border-color:var(--line)}
+.ch-seg.cur{border-color:var(--brand);background:color-mix(in srgb,var(--brand) 8%,var(--bg))}
+.ch-seg .d{font-size:12px;color:var(--brand);font-weight:700}
+.ch-seg .t{font-size:15px;font-weight:700;margin:2px 0}
+.ch-seg .r{font-size:13px;color:var(--muted);line-height:1.5}
+.ch-gap{margin:4px 0 14px;padding:10px 14px;border-radius:12px;border:1px dashed var(--line);font-size:13px;color:var(--muted)}
+.chrono-bar{margin:0 20px 16px;padding:12px 14px;border-radius:14px;background:color-mix(in srgb,var(--brand) 9%,var(--paper));border:1px solid color-mix(in srgb,var(--brand) 25%,transparent)}
+.chrono-bar .top{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--brand);font-weight:700}
+.chrono-bar .top button{margin-left:auto;font-size:12px;color:var(--muted);font-weight:400;padding:4px 8px;border-radius:8px;background:var(--chip)}
+.chrono-bar .tt{font-size:16px;font-weight:700;margin:3px 0 8px}
+.chrono-bar .prog{height:5px;border-radius:5px;background:var(--line);overflow:hidden}
+.chrono-bar .prog i{display:block;height:100%;background:var(--brand)}
+.chrono-bar .meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:6px}
+
+
+/* connected verses (hyperloop) */
+.xr{display:inline-flex;align-items:center;gap:4px;margin-left:6px;padding:2px 8px 2px 6px;border-radius:999px;background:color-mix(in srgb,#e0a92e 14%,transparent);
+  color:#b07a10;font-family:var(--sans);font-size:12px;font-weight:700;vertical-align:2px;line-height:1.6;cursor:pointer;border:1px solid color-mix(in srgb,#e0a92e 35%,transparent)}
+.xr svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.xr:hover{background:color-mix(in srgb,#e0a92e 26%,transparent)}
+@media (prefers-color-scheme:dark){.xr{color:#f1c55a}}
+.mode-both .en-col .xr{display:none}
+.xr-item{display:block;width:100%;text-align:left;padding:14px;border-radius:14px;background:var(--bg);margin-bottom:10px;border:1px solid var(--line)}
+.xr-item:hover{border-color:#e0a92e}
+.xr-item svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;flex:0 0 auto}
+.xr-item .ref{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;color:#b07a10}
+.xr-item .ref span{margin-left:auto;font-size:13px;color:#fff;background:#d99a1e;padding:4px 10px;border-radius:999px}
+.xr-item .t{font-family:var(--sans);font-size:15px;line-height:1.7;margin-top:6px;color:var(--ink)}
+.xr-from{font-size:13px;color:var(--muted);margin:0 0 12px;line-height:1.6}
+.loop-overlay{position:fixed;inset:0;z-index:90;background:#05040a;opacity:0;animation:loopin .35s forwards}
+.loop-overlay.out{animation:loopout .4s forwards}
+@keyframes loopin{to{opacity:1}} @keyframes loopout{from{opacity:1}to{opacity:0}}
+.loop-overlay canvas{position:absolute;inset:0;width:100%;height:100%}
+.loop-hud{position:absolute;inset:0;pointer-events:none;color:#efe9de;font-family:"Noto Sans KR",sans-serif}
+.loop-flash{position:absolute;inset:0;background:#fff7dc;opacity:0;pointer-events:none}
+.loop-skip{position:absolute;top:calc(env(safe-area-inset-top) + 16px);right:16px;padding:9px 14px;border-radius:999px;background:rgba(255,255,255,.14);color:#efe9de;font-size:13px;z-index:2}
+.loop-book{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 70px);text-align:center;font-size:14px;letter-spacing:.12em;text-shadow:0 2px 10px #000}
+.loop-book b{display:block;font-size:26px;color:#ffd76a;letter-spacing:.06em;margin-top:4px}
+.loop-route{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top) + 74px);display:flex;align-items:center;justify-content:center;gap:12px;font-weight:700;font-size:17px;text-shadow:0 2px 10px #000}
+.loop-route i{width:60px;height:2px;background:linear-gradient(90deg,#efe9de,#ffd76a)}
+.loop-route .to{color:#ffd76a}
+.backchip{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 84px);z-index:30;padding:10px 16px;border-radius:999px;background:var(--ink);color:var(--bg);font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.25);display:none}
+.backchip.show{display:block}
 
 /* long-press + animation */
 .verse{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
@@ -350,6 +415,19 @@ svg .now-lbl{fill:var(--accent);font-size:12px;font-weight:700;font-family:var(-
   <div class="sh-head"><h2>저장한 구절</h2><button class="icon" data-close>✕</button></div>
   <div class="sh-body" id="bmBody"></div>
 </section>
+<div class="more-menu" id="moreMenu">
+  <button id="mChrono"><svg viewBox="0 0 24 24"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg><span><b>시대순으로 읽기</b><small>일어난 순서대로 하나의 이야기로</small></span></button>
+  <button id="mSettings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><span><b>설정</b><small>글자 크기, 출처</small></span></button>
+</div>
+<section class="sheet" id="chronoSheet" aria-label="시대순으로 읽기">
+  <div class="sh-head"><h2>시대순으로 읽기</h2><button class="icon" data-close>✕</button></div>
+  <div class="sh-body" id="chronoBody"></div>
+</section>
+<section class="sheet" id="xrSheet" aria-label="연결된 구절">
+  <div class="sh-head"><h2 id="xrTitle">연결된 구절</h2><button class="icon" data-close>✕</button></div>
+  <div class="sh-body" id="xrBody"></div>
+</section>
+<button class="backchip" id="backChip"></button>
 <section class="sheet" id="setSheet" aria-label="설정">
   <div class="sh-head"><h2>설정</h2><button class="icon" data-close>✕</button></div>
   <div class="sh-body">
@@ -399,20 +477,24 @@ async function render(scrollVerse){
   catch(e){ $('#reader').innerHTML = '<div class="loading">본문을 불러오지 못했어요. 새로고침해 주세요.</div>'; return; }
   const verses = chapters[state.c] || [];
   const vdata = await loadViz(state.b); const vch = vdata ? (vdata.verses[state.c]||[]) : [];
+  const xrc = ((await loadXref(state.b))||[])[state.c] || [];
   const unit = B.kor==='시편'?'편':'장';
-  let h = '';
+  let h = chronoBar();
+  if(state.chrono && chronoPos()!=null) store.set('chronoAt',[state.b,state.c]);
   if(vdata && !store.get('tipDone',0)) h += `<div class="tip"><span>구절을 눌러 보세요. <b>누가 · 어디서 · 언제</b>를 그림으로 보여드려요.<br>✦ 표시가 있는 구절은 <b>꾹 누르면</b> 애니메이션이 나와요.</span><button id="tipClose">닫기</button></div>`;
   verses.forEach(([ko,en],i)=>{
     const key = `${state.b}-${state.c}-${i+1}`;
     const vr = vch[i]; const hv = vr && (vr[0].length||vr[1].length);
+    const xn = (xrc[i]||[]).length; const xchip = xn ? `<button class="xr" data-xv="${i+1}" aria-label="연결된 구절 ${xn}개">${XR_ICON}${xn}</button>` : '';
     h += `<div class="verse${marks[key]?' mark':''}${hv?' has-viz':''}${window.VERSE_ANIM&&VERSE_ANIM[key]?' has-anim':''}" data-v="${i+1}" id="v${i+1}">`+
-      `<div class="col ko-col"><span class="vn">${i+1}</span><div class="ko txt">${esc(ko||'')}</div></div>`+
-      `<div class="col en-col"><span class="vn">${i+1}</span><div class="en txt">${esc(en||'')}</div></div></div>`;
+      `<div class="col ko-col"><span class="vn">${i+1}</span><div class="ko txt">${esc(ko||'')}${xchip}</div></div>`+
+      `<div class="col en-col"><span class="vn">${i+1}</span><div class="en txt">${esc(en||'')}${xchip}</div></div></div>`;
   });
   const prev = neighbor(-1), next = neighbor(1);
   h += `<div class="pager"><button id="prevBtn" ${prev?'':'disabled'}>이전${prev?`<b>${BOOKS[prev[0]].short} ${prev[1]+1}</b>`:''}</button>
         <button id="nextBtn" ${next?'':'disabled'}>다음${next?`<b>${BOOKS[next[0]].short} ${next[1]+1}</b>`:''}</button></div>`;
   $('#reader').innerHTML = h;
+  if($('#chronoOff')) $('#chronoOff').onclick=e=>{ e.stopPropagation(); state.chrono=false; store.set('chrono',false); render(); };
   $('#prevBtn').onclick = ()=>go(...prev);
   $('#nextBtn').onclick = ()=>go(...next);
   if(scrollVerse){
@@ -424,6 +506,7 @@ async function render(scrollVerse){
   if(next && next[0]!==state.b) loadBook(next[0]).catch(()=>{});
 }
 function neighbor(d){
+  if(state.chrono && SEQ.length){ const k=SEQI[`${state.b}-${state.c}`]; if(k!=null){ const n=SEQ[k+d]; return n?[n[0],n[1]]:null; } }
   let b=state.b, c=state.c+d;
   if(c<0){ b--; if(b<0) return null; c=BOOKS[b].chapters-1; }
   if(c>=BOOKS[b].chapters){ b++; if(b>=BOOKS.length) return null; c=0; }
@@ -443,6 +526,7 @@ function fromHash(){
 
 /* ---------- selection ---------- */
 $('#reader').addEventListener('click', e=>{
+  const xb = e.target.closest('.xr'); if(xb){ e.stopPropagation(); openXr(+xb.dataset.xv); return; }
   if(e.target.closest('#tipClose')){ store.set('tipDone',1); e.target.closest('.tip').remove(); return; }
   const v = e.target.closest('.verse'); if(!v) return;
   if(lp.fired){ lp.fired=false; return; }
@@ -484,12 +568,92 @@ $('#aSave').onclick = async ()=>{
 ['#aCopy','#aMark','#aSave'].forEach(id=>{ const f=$(id).onclick; $(id).onclick=async()=>{ const n=[...state.sel]; await f(); closeSheets(); }; });
 
 
+
+/* ---------- chronological storyline (시대순으로 읽기) ---------- */
+let CHRONO=null, SEQ=[], SEQI={};
+async function loadChrono(){
+  if(CHRONO) return CHRONO;
+  CHRONO = await fetch('data/chrono.json').then(r=>r.json());
+  CHRONO.forEach((sg,si)=>sg.r.forEach(([b,a,z])=>{ for(let c=a;c<=z;c++){ SEQI[`${b}-${c-1}`]=SEQ.length; SEQ.push([b,c-1,si]); } }));
+  return CHRONO;
+}
+state.chrono = store.get('chrono', false);
+const rangeText = ([b,a,z]) => { const B=BOOKS[b]; return (a===1 && z===B.chapters) ? `${B.kor} 전체` : (a===z ? `${B.kor} ${a}장` : `${B.kor} ${a}–${z}장`); };
+function chronoPos(){ const k=SEQI[`${state.b}-${state.c}`]; return k==null?null:k; }
+function chronoBar(){
+  if(!state.chrono || !CHRONO) return '';
+  const k=chronoPos(); if(k==null) return '';
+  const si=SEQ[k][2], sg=CHRONO[si];
+  return `<div class="chrono-bar"><div class="top">🕰 시대순 읽기 · ${esc(sg.era)}<button id="chronoOff">끝내기</button></div>
+    <div class="tt">${esc(sg.title)} <span style="font-weight:400;color:var(--muted);font-size:13px">${esc(sg.date)}</span></div>
+    <div class="prog"><i style="width:${((k+1)/SEQ.length*100).toFixed(2)}%"></i></div>
+    <div class="meta"><span>${k+1} / ${SEQ.length}장</span><span>${si+1} / ${CHRONO.length} 장면</span></div></div>`;
+}
+function drawChrono(){
+  const k = state.chrono ? chronoPos() : null;
+  const cur = k!=null ? SEQ[k][2] : -1;
+  const saved = store.get('chronoAt', null);
+  let h = `<p class="ch-intro">성경을 쓰인 순서가 아니라 <b>일어난 순서</b>대로 읽어요. 창조부터 요한계시록까지 1,189장 전체가 하나의 이야기로 이어져요. 장면을 누르면 거기서부터 읽기 시작하고, 아래 ‘다음’ 버튼이 시대순으로 이어져요.</p>
+    <div class="ch-start"><button class="pri" id="chFromStart">처음부터 시작</button>${saved?`<button class="sec" id="chResume">이어 읽기 · ${BOOKS[saved[0]].kor} ${saved[1]+1}장</button>`:''}</div>`;
+  let era=null;
+  CHRONO.forEach((sg,si)=>{
+    if(sg.era!==era){
+      if(era) h+='</div>';
+      if(sg.era==='예수의 생애') h+=`<div class="ch-gap">⏳ 말라기 이후 약 400년 — 성경이 기록되지 않은 ‘침묵의 시간’</div>`;
+      era=sg.era; h+=`<div class="ch-era"><h3><i></i>${esc(era)}</h3>`;
+    }
+    h+=`<button class="ch-seg ${si===cur?'cur':''}" data-s="${si}"><div class="d">${esc(sg.date)}</div><div class="t">${esc(sg.title)}</div><div class="r">${sg.r.map(rangeText).join(' · ')}</div></button>`;
+  });
+  h+='</div><p class="ch-intro" style="margin-top:14px;font-size:12px">연대와 순서는 전통적인 성경 연대 추정 중 하나를 따른 대략적인 것이고, 시편처럼 여러 시대에 걸친 책은 묶어서 배치했어요.</p>';
+  $('#chronoBody').innerHTML=h;
+  const start = (b,c)=>{ state.chrono=true; store.set('chrono',true); closeSheets(); go(b,c); };
+  $('#chronoBody').querySelectorAll('[data-s]').forEach(x=>x.onclick=()=>{ const [b,a]=CHRONO[+x.dataset.s].r[0]; start(b,a-1); });
+  $('#chFromStart').onclick=()=>start(0,0);
+  if($('#chResume')) $('#chResume').onclick=()=>start(saved[0],saved[1]);
+  const curEl=$('#chronoBody .ch-seg.cur'); if(curEl) setTimeout(()=>curEl.scrollIntoView({block:'center'}),300);
+}
+$('#setBtn').onclick=e=>{ e.stopPropagation(); $('#moreMenu').classList.toggle('open'); };
+document.addEventListener('click',e=>{ if(!e.target.closest('#moreMenu')) $('#moreMenu').classList.remove('open'); });
+$('#mSettings').onclick=()=>{ $('#moreMenu').classList.remove('open'); openSheet('#setSheet'); };
+$('#mChrono').onclick=async()=>{ $('#moreMenu').classList.remove('open'); await loadChrono(); drawChrono(); openSheet('#chronoSheet'); };
+if(state.chrono) loadChrono().then(()=>{ if(BOOKS.length) render(); });
+
+
+/* ---------- connected verses: hyperloop ride ---------- */
+const XR = {};
+function loadXref(b){ if(!XR[b]) XR[b]=fetch(`data/xref/${pad(b+1)}.json`).then(r=>r.json()).catch(()=>null); return XR[b]; }
+const XR_ICON = '<svg viewBox="0 0 24 24"><path d="M3 18c0-7 4-12 9-12s9 5 9 12"/><path d="M18 15l3 3 3-3" transform="translate(-3 0)"/></svg>';
+const refLabel = ([b,c,v]) => `${BOOKS[b].kor} ${c+1}:${v}`;
+async function openXr(n){
+  const list = ((await loadXref(state.b))||[])[state.c]?.[n-1] || [];
+  if(!list.length) return;
+  const from=[state.b,state.c,n];
+  $('#xrTitle').textContent = `${refLabel(from)}과 연결된 구절`;
+  const items = await Promise.all(list.map(async ([b,c,v])=>{ const ch=(await loadBook(b))[c]||[]; const vv=ch[v-1]||['','']; return {b,c,v,t: state.mode==='en'?vv[1]:(vv[0]||vv[1])}; }));
+  $('#xrBody').innerHTML = `<p class="xr-from">이 구절과 함께 읽으면 좋은 구절이에요. 누르면 성경 전체를 잇는 연결선을 타고 그 구절로 이동해요.</p>` +
+    items.map((it,i)=>`<button class="xr-item" data-i="${i}"><div class="ref">${XR_ICON}${refLabel([it.b,it.c,it.v])}<span>타고 가기 ›</span></div><div class="t">${esc(it.t||'')}</div></button>`).join('') +
+    `<p class="xr-from" style="font-size:12px;margin-top:6px">교차참조: OpenBible.info (CC BY)</p>`;
+  $('#xrBody').querySelectorAll('.xr-item').forEach(el=>el.onclick=()=>{ const it=items[+el.dataset.i]; rideTo(from,[it.b,it.c,it.v]); });
+  openSheet('#xrSheet');
+}
+async function rideTo(from,to){
+  closeSheets(); clearSel();
+  try{
+    const mod = await import('./lib/loop.js');
+    await mod.ride({from, to, fromLabel: refLabel(from), toLabel: refLabel(to), books: BOOKS});
+  }catch(e){ console.warn('ride failed', e); }
+  go(to[0],to[1],to[2]);
+  const bc=$('#backChip'); bc.textContent=`← ${refLabel(from)}(으)로 돌아가기`; bc.classList.add('show');
+  bc.onclick=()=>{ bc.classList.remove('show'); go(from[0],from[1],from[2]); };
+  clearTimeout(rideTo.h); rideTo.h=setTimeout(()=>bc.classList.remove('show'),12000);
+}
+
 /* ---------- long press → animation ---------- */
 const lp = { timer:null, raf:null, fired:false, x:0, y:0, v:null, t0:0 };
 const HOLD = 550;
 function lpCancel(){ clearTimeout(lp.timer); cancelAnimationFrame(lp.raf); $('#press').classList.remove('on'); lp.v=null; }
 $('#reader').addEventListener('pointerdown', e=>{
-  const v=e.target.closest('.verse'); if(!v || e.button>0) return;
+  const v=e.target.closest('.verse'); if(!v || e.button>0 || e.target.closest('.xr')) return;
   lp.v=v; lp.x=e.clientX; lp.y=e.clientY; lp.t0=performance.now(); lp.fired=false;
   const pr=$('#press'); pr.style.left=lp.x+'px'; pr.style.top=lp.y+'px'; pr.style.setProperty('--p',0);
   const tick=()=>{ const p=Math.min(1,(performance.now()-lp.t0)/HOLD); if(p>0.15) pr.classList.add('on'); pr.style.setProperty('--p',p); if(p<1) lp.raf=requestAnimationFrame(tick); };
@@ -750,7 +914,6 @@ function showChapters(b){
   $('#navBody').scrollTop=0;
 }
 $('#whereBtn').onclick = showBooks;
-$('#setBtn').onclick = ()=>openSheet('#setSheet');
 $('#searchBtn').onclick = ()=>{ openSheet('#searchSheet'); setTimeout(()=>$('#q').focus(),250); };
 $('#bmBtn').onclick = ()=>{ drawSaved(); openSheet('#bmSheet'); };
 
