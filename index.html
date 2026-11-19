@@ -253,6 +253,79 @@ main{padding:22px 0 140px}
 .backchip{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 84px);z-index:30;padding:10px 16px;border-radius:999px;background:var(--ink);color:var(--bg);font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.25);display:none}
 .backchip.show{display:block}
 
+
+/* ===== 모임 (KakaoTalk-style) ===== */
+#groupView{padding:0 0 140px}
+.kt-head{display:flex;align-items:center;gap:6px;padding:18px 16px 8px}
+.kt-title{flex:1;font-size:22px;font-weight:700}
+.kt-title span{font-size:14px}
+.kt-ic{width:40px;height:40px;border-radius:10px;display:grid;place-items:center}
+.kt-ic:hover{background:var(--chip)}
+.kt-ic svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.kt-new{display:none;margin:0 16px 10px;background:var(--paper);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.12);border:1px solid var(--line);padding:14px}
+.kt-new.open{display:block}
+.kt-new-row{display:flex;gap:8px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.kt-new-row button{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 0;border-radius:12px;font-size:14px}
+.kt-new-row button:hover{background:var(--chip)}
+.kt-new-row svg{width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round}
+.kt-new-sub{padding-top:12px;font-size:14px}.kt-new-sub p{margin:4px 0 0;color:var(--muted);font-size:13px;line-height:1.5}
+.kt-chips{display:flex;gap:8px;padding:6px 16px 10px}
+.kt-chips button{padding:8px 16px;border-radius:999px;border:1px solid var(--line);font-size:14px}
+.kt-chips button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.kt-chips i{font-style:normal;background:#f05a28;color:#fff;border-radius:999px;padding:1px 7px;font-size:12px;margin-left:4px}
+.kt-chips i:empty{display:none}
+.room{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:10px 16px}
+.room:hover{background:var(--chip)}
+.av{width:52px;height:52px;border-radius:20px;flex:0 0 auto;display:grid;place-items:center;color:#fff;font-weight:700;font-size:16px;overflow:hidden;position:relative}
+.av.grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:none}
+.av.grid{grid-template-rows:1fr 1fr}
+.av.grid span{border-radius:9px;display:grid;place-items:center;font-size:11px;color:#fff;width:100%;height:100%}
+.room .mid{flex:1;min-width:0}
+.room .nm{font-size:16px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.room .nm em{font-style:normal;color:var(--muted);font-weight:400;margin-left:6px;font-size:14px}
+.room .last{font-size:14px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.room .side{text-align:right;flex:0 0 auto;font-size:12px;color:var(--muted)}
+.room .badge{display:inline-block;margin-top:6px;background:#f05a28;color:#fff;border-radius:999px;min-width:20px;padding:2px 6px;font-size:12px;text-align:center}
+.kt-empty{padding:40px 24px;text-align:center;color:var(--muted);font-size:14px;line-height:1.7}
+/* chat room */
+#chatRoom{position:fixed;inset:0;z-index:35;background:#b2c7d9;display:flex;flex-direction:column;max-width:1040px;margin:0 auto}
+@media (prefers-color-scheme:dark){#chatRoom{background:#29323b}}
+#chatRoom[hidden]{display:none}
+.kr-head{display:flex;align-items:center;gap:6px;padding:calc(env(safe-area-inset-top) + 10px) 10px 10px;background:inherit}
+.kr-title{flex:1;font-size:17px}.kr-title span{color:rgba(0,0,0,.45);margin-left:6px;font-size:15px}
+.kr-msgs{flex:1;overflow:auto;padding:8px 12px 16px}
+.kr-day{text-align:center;margin:10px 0;font-size:12px}.kr-day span{background:rgba(0,0,0,.12);color:#fff;padding:4px 12px;border-radius:999px}
+.kr-sys{text-align:center;font-size:12px;color:rgba(0,0,0,.55);margin:10px 24px;line-height:1.5}
+.msg{display:flex;gap:8px;margin:6px 0;align-items:flex-start}
+.msg .av{width:38px;height:38px;border-radius:15px;font-size:13px}
+.msg .who{font-size:13px;color:rgba(0,0,0,.65);margin-bottom:4px}
+.msg .row{display:flex;align-items:flex-end;gap:6px}
+.msg .b{background:#fff;color:#111;padding:9px 12px;border-radius:4px 16px 16px 16px;font-size:15px;line-height:1.5;max-width:min(70vw,520px);word-break:break-word}
+.msg .tm{font-size:11px;color:rgba(0,0,0,.5);white-space:nowrap}
+.msg.me{justify-content:flex-end}.msg.me .row{flex-direction:row-reverse}
+.msg.me .b{background:#fee500;border-radius:16px 4px 16px 16px}
+.msg .b.verse{padding:0;overflow:hidden;min-width:240px}
+.msg .b.verse .vh{background:#4f67a8;color:#fff;font-size:13px;font-weight:700;padding:8px 12px}
+.msg .b.verse .vt{padding:10px 12px;font-family:"Noto Serif KR",serif}
+.kr-input{display:flex;gap:6px;align-items:center;padding:8px 8px calc(env(safe-area-inset-bottom) + 8px);background:#fff}
+@media (prefers-color-scheme:dark){.kr-input{background:#1e1e1e}.msg .b:not(.verse .vt){}}
+.kr-input input{flex:1;padding:10px 12px;border-radius:20px;border:0;background:#f2f2f2;font:inherit;font-size:15px}
+.kr-send{background:#fee500;color:#111;padding:9px 14px;border-radius:18px;font-size:14px;font-weight:700}
+/* invite sheet */
+.inv-add{display:flex;gap:8px}
+.inv-add input,.inv-name input{flex:1;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:16px}
+.inv-add button{padding:0 18px;border-radius:12px;background:var(--ink);color:var(--paper);font-weight:700}
+.inv-hint{font-size:12px;color:var(--muted);margin:8px 2px 12px}
+.inv-hint.err{color:#d93025}
+.inv-p{display:flex;align-items:center;gap:12px;padding:10px 2px;border-bottom:1px solid var(--line)}
+.inv-p .av{width:40px;height:40px;border-radius:15px;font-size:14px}
+.inv-p .id{flex:1;min-width:0}.inv-p .id b{display:block;font-size:15px}.inv-p .id small{color:var(--muted);font-size:12px}
+.inv-p button{color:var(--muted);font-size:13px;padding:6px 8px}
+.inv-name{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted);margin:18px 0 12px}
+.inv-go{width:100%;padding:15px;border-radius:14px;background:#fee500;color:#111;font-weight:700;font-size:16px}
+.inv-go:disabled{background:var(--chip);color:var(--muted)}
+.inv-note{font-size:12px;color:var(--muted);text-align:center;margin-top:10px}
+
 /* long-press + animation */
 .verse{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 .verse.has-anim .vn::before{content:"✦";display:block;font-size:11px;color:var(--accent);margin-bottom:2px;animation:twinkle 2.4s ease-in-out infinite}
@@ -367,12 +440,26 @@ svg .now-lbl{fill:var(--accent);font-size:12px;font-weight:700;font-family:var(-
   </header>
   <main id="reader"><div class="loading">불러오는 중…</div></main>
   <section id="groupView" hidden>
-    <div class="grp-empty">
-      <svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V10l7-5 7 5v11M10 21v-5h4v5M12 2v3M10.5 3.5h3"/></svg>
-      <h3>함께 읽는 모임</h3>
-      <p>교회 소그룹이나 친구들과 같은 본문을 읽고,<br>묵상과 질문을 나누는 공간이에요.</p>
-      <button id="grpCreate">모임 만들기</button>
-      <p class="grp-sub">아직 프로토타입이라 모임 기능은 화면만 준비돼 있어요.</p>
+    <div id="chatList">
+      <div class="kt-head"><div class="kt-title">채팅 <span>▾</span></div>
+        <button class="kt-ic" id="ktSearch" aria-label="검색"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+        <button class="kt-ic" id="ktNew" aria-label="새 채팅"><svg viewBox="0 0 24 24"><path d="M12 4C7 4 3 7.1 3 11c0 2.3 1.4 4.3 3.6 5.6L6 20l3.9-2.2c.7.1 1.4.2 2.1.2 5 0 9-3.1 9-7"/><path d="M19 2v6M16 5h6"/></svg></button>
+      </div>
+      <div class="kt-new" id="ktNewMenu">
+        <div class="kt-new-row"><button data-k="group"><svg viewBox="0 0 24 24"><path d="M8 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 4.5a3.5 3.5 0 0 1 0 6.5M18 14c2.4.8 4 3.1 4 6"/></svg>그룹 채팅</button>
+          <button data-k="one"><svg viewBox="0 0 24 24"><path d="M12 4C7 4 3 7.1 3 11c0 2.3 1.4 4.3 3.6 5.6L6 20l3.9-2.2c.7.1 1.4.2 2.1.2 5 0 9-3.1 9-7s-4-7-9-7z"/></svg>1:1 채팅</button></div>
+        <div class="kt-new-sub"><b>이메일·휴대폰 번호로 초대</b><p>친구 목록에 없어도 이메일이나 번호로 바로 모임을 만들 수 있어요.</p></div>
+      </div>
+      <div class="kt-chips"><button class="on" data-f="all">전체</button><button data-f="unread">안읽음 <i id="unreadN"></i></button></div>
+      <div id="roomList"></div>
+    </div>
+    <div id="chatRoom" hidden>
+      <div class="kr-head"><button class="kt-ic" id="krBack" aria-label="뒤로"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <div class="kr-title"><b id="krName"></b><span id="krCount"></span></div>
+        <button class="kt-ic" id="krMembers" aria-label="멤버"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button></div>
+      <div class="kr-msgs" id="krMsgs"></div>
+      <form class="kr-input" id="krForm"><button type="button" class="kt-ic" id="krPlus" aria-label="말씀 공유"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+        <input id="krText" placeholder="메시지 입력" autocomplete="off"><button class="kr-send" id="krSend">전송</button></form>
     </div>
   </section>
 </div>
@@ -428,6 +515,17 @@ svg .now-lbl{fill:var(--accent);font-size:12px;font-weight:700;font-family:var(-
   <div class="sh-body" id="xrBody"></div>
 </section>
 <button class="backchip" id="backChip"></button>
+<section class="sheet" id="inviteSheet" aria-label="그룹 채팅 만들기">
+  <div class="sh-head"><h2 id="invTitle">그룹 채팅 만들기</h2><button class="icon" data-close>✕</button></div>
+  <div class="sh-body">
+    <form class="inv-add" id="invForm"><input id="invInput" placeholder="이메일 또는 휴대폰 번호" autocomplete="off" inputmode="email"><button>추가</button></form>
+    <div class="inv-hint" id="invHint">예: friend@example.com · 010-1234-5678</div>
+    <div id="invList"></div>
+    <label class="inv-name">모임 이름 (선택)<input id="invName" placeholder="예: 화요 말씀 묵상"></label>
+    <button class="inv-go" id="invGo" disabled>사람을 추가해 주세요</button>
+    <p class="inv-note">프로토타입이라 실제 초대 문자·메일은 보내지지 않고, 이 기기에만 저장돼요.</p>
+  </div>
+</section>
 <section class="sheet" id="setSheet" aria-label="설정">
   <div class="sh-head"><h2>설정</h2><button class="icon" data-close>✕</button></div>
   <div class="sh-body">
@@ -613,7 +711,7 @@ function drawChrono(){
   const curEl=$('#chronoBody .ch-seg.cur'); if(curEl) setTimeout(()=>curEl.scrollIntoView({block:'center'}),300);
 }
 $('#setBtn').onclick=e=>{ e.stopPropagation(); $('#moreMenu').classList.toggle('open'); };
-document.addEventListener('click',e=>{ if(!e.target.closest('#moreMenu')) $('#moreMenu').classList.remove('open'); });
+document.addEventListener('click',e=>{ if(!e.target.closest('#moreMenu')) $('#moreMenu').classList.remove('open'); if(!e.target.closest('#ktNewMenu')&&!e.target.closest('#ktNew')) $('#ktNewMenu').classList.remove('open'); });
 $('#mSettings').onclick=()=>{ $('#moreMenu').classList.remove('open'); openSheet('#setSheet'); };
 $('#mChrono').onclick=async()=>{ $('#moreMenu').classList.remove('open'); await loadChrono(); drawChrono(); openSheet('#chronoSheet'); };
 if(state.chrono) loadChrono().then(()=>{ if(BOOKS.length) render(); });
@@ -647,6 +745,89 @@ async function rideTo(from,to){
   bc.onclick=()=>{ bc.classList.remove('show'); go(from[0],from[1],from[2]); };
   clearTimeout(rideTo.h); rideTo.h=setTimeout(()=>bc.classList.remove('show'),12000);
 }
+
+
+/* ---------- 모임: KakaoTalk-style chats ---------- */
+const AVC=['#7aa5f0','#f08a6c','#6cc4a4','#b892f0','#f2b84b','#ef7fa8','#5fb6d9'];
+const avColor = s => AVC[[...s].reduce((a,c)=>a+c.charCodeAt(0),0)%AVC.length];
+const nameOf = id => id.includes('@') ? id.split('@')[0] : id.replace(/(\d{3})-?(\d{3,4})-?(\d{4})/,'$1-****-$3');
+const initial = id => { const n=nameOf(id); return /[가-힣]/.test(n[0]) ? n[0] : n.slice(0,2).toUpperCase(); };
+const now = () => new Date();
+const hhmm = d => { d=new Date(d); const h=d.getHours(); return `${h<12?'오전':'오후'} ${((h+11)%12)+1}:${String(d.getMinutes()).padStart(2,'0')}`; };
+let rooms = store.get('rooms', null);
+if(!rooms){
+  const t=Date.now();
+  rooms=[{id:'r0', name:'화요 말씀 묵상 (예시)', members:['minji@example.com','010-2345-6789','joon@example.com'], unread:2, msgs:[
+    {from:'minji@example.com', text:'이번 주는 사무엘상 17장 같이 읽어요!', at:t-3600e3},
+    {from:'010-2345-6789', verse:{ref:'사무엘상 17:47', text:'또 여호와의 구원하심이 칼과 창에 있지 아니함을 이 무리로 알게 하리라 전쟁은 여호와께 속한 것인즉 그가 너희를 우리 손에 붙이시리라'}, at:t-3500e3},
+    {from:'joon@example.com', text:'다윗이 칼 없이 이긴 게 핵심이네요 🙏', at:t-3400e3}]}];
+  store.set('rooms', rooms);
+}
+const saveRooms = () => store.set('rooms', rooms);
+let curRoom=null, chatFilter='all';
+function avatarFor(room){
+  if(room.members.length===1){ const m=room.members[0]; return `<div class="av" style="background:${avColor(m)}">${esc(initial(m))}</div>`; }
+  return `<div class="av grid">${room.members.slice(0,4).map(m=>`<span style="background:${avColor(m)}">${esc(initial(m))}</span>`).join('')}</div>`;
+}
+function lastText(m){ return !m ? '' : m.verse ? `📖 ${m.verse.ref}` : m.text; }
+function drawRooms(){
+  const list = rooms.filter(r=>chatFilter==='all'||r.unread).sort((a,b)=>(b.msgs.at(-1)?.at||0)-(a.msgs.at(-1)?.at||0));
+  const un = rooms.reduce((a,r)=>a+(r.unread||0),0); $('#unreadN').textContent = un||'';
+  $('#roomList').innerHTML = list.length ? list.map(r=>{ const m=r.msgs.at(-1);
+    return `<button class="room" data-r="${r.id}">${avatarFor(r)}<div class="mid"><div class="nm">${esc(r.name)}<em>${r.members.length+1}</em></div><div class="last">${esc(lastText(m))}</div></div>
+      <div class="side">${m?hhmm(m.at):''}${r.unread?`<br><span class="badge">${r.unread}</span>`:''}</div></button>`; }).join('')
+    : `<div class="kt-empty">아직 모임이 없어요.<br>오른쪽 위 말풍선 ＋ 버튼으로 이메일이나 휴대폰 번호를 추가해 모임을 만들어 보세요.</div>`;
+  $('#roomList').querySelectorAll('.room').forEach(b=>b.onclick=()=>openRoom(b.dataset.r));
+}
+function openRoom(id){
+  curRoom = rooms.find(r=>r.id===id); if(!curRoom) return;
+  curRoom.unread=0; saveRooms();
+  $('#krName').textContent=curRoom.name; $('#krCount').textContent=curRoom.members.length+1;
+  $('#chatRoom').hidden=false; $('#tabbar').style.display='none'; drawMsgs();
+}
+function drawMsgs(){
+  let h=`<div class="kr-day"><span>${new Date(curRoom.msgs[0]?.at||Date.now()).toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'long'})}</span></div>`;
+  if(curRoom.created) h+=`<div class="kr-sys">${esc(curRoom.members.map(nameOf).join(', '))}님을 초대했어요.</div>`;
+  curRoom.msgs.forEach(m=>{
+    const me = m.from==='me';
+    const body = m.verse ? `<div class="b verse"><div class="vh">📖 ${esc(m.verse.ref)}</div><div class="vt">${esc(m.verse.text)}</div></div>` : `<div class="b">${esc(m.text)}</div>`;
+    h += me ? `<div class="msg me"><div><div class="row">${body}<span class="tm">${hhmm(m.at)}</span></div></div></div>`
+            : `<div class="msg"><div class="av" style="background:${avColor(m.from)}">${esc(initial(m.from))}</div><div><div class="who">${esc(nameOf(m.from))}</div><div class="row">${body}<span class="tm">${hhmm(m.at)}</span></div></div></div>`;
+  });
+  $('#krMsgs').innerHTML=h; $('#krMsgs').scrollTop=1e9;
+}
+function closeRoom(){ $('#chatRoom').hidden=true; $('#tabbar').style.display=''; curRoom=null; drawRooms(); }
+$('#krBack').onclick=closeRoom;
+$('#krForm').onsubmit=e=>{ e.preventDefault(); const v=$('#krText').value.trim(); if(!v||!curRoom) return; curRoom.msgs.push({from:'me',text:v,at:Date.now()}); $('#krText').value=''; saveRooms(); drawMsgs(); };
+$('#krPlus').onclick=async()=>{ if(!curRoom) return; const ch=(await loadBook(state.b))[state.c]; const v=(state.sel.size?[...state.sel][0]:1);
+  const B=BOOKS[state.b]; curRoom.msgs.push({from:'me',verse:{ref:`${B.kor} ${state.c+1}:${v}`, text:ch[v-1][0]||ch[v-1][1]},at:Date.now()}); saveRooms(); drawMsgs(); toast('지금 읽던 구절을 보냈어요'); };
+$('#krMembers').onclick=()=>toast(`멤버: 나, ${curRoom.members.map(nameOf).join(', ')}`);
+document.querySelectorAll('.kt-chips button').forEach(b=>b.onclick=()=>{ chatFilter=b.dataset.f; document.querySelectorAll('.kt-chips button').forEach(x=>x.classList.toggle('on',x===b)); drawRooms(); });
+$('#ktNew').onclick=e=>{ e.stopPropagation(); $('#ktNewMenu').classList.toggle('open'); };
+$('#ktSearch').onclick=()=>toast('채팅 검색은 준비 중이에요');
+// invite flow: add people by email or phone, then form a group chat
+let invitees=[], inviteMode='group';
+const EMAIL=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/, PHONE=/^01[016789]-?\d{3,4}-?\d{4}$/;
+function normId(v){ v=v.trim(); if(EMAIL.test(v)) return v.toLowerCase(); const d=v.replace(/[\s-]/g,''); if(PHONE.test(d)) return d.replace(/^(\d{3})(\d{3,4})(\d{4})$/,'$1-$2-$3'); return null; }
+function drawInvite(){
+  $('#invList').innerHTML = invitees.map((m,i)=>`<div class="inv-p"><div class="av" style="background:${avColor(m)}">${esc(initial(m))}</div><div class="id"><b>${esc(nameOf(m))}</b><small>${m.includes('@')?'이메일':'휴대폰'} · ${esc(m)}</small></div><button data-x="${i}">삭제</button></div>`).join('');
+  $('#invList').querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{ invitees.splice(+b.dataset.x,1); drawInvite(); });
+  const n=invitees.length, go=$('#invGo');
+  go.disabled = !n || (inviteMode==='one' && n!==1);
+  go.textContent = !n ? '사람을 추가해 주세요' : inviteMode==='one' ? (n===1?'1:1 채팅 시작':'1:1 채팅은 한 명만 추가할 수 있어요') : `${n}명과 그룹 채팅 만들기`;
+  $('.inv-name').style.display = inviteMode==='one' ? 'none' : '';
+}
+document.querySelectorAll('#ktNewMenu [data-k]').forEach(b=>b.onclick=()=>{ inviteMode=b.dataset.k; invitees=[]; $('#invName').value=''; $('#invHint').textContent='예: friend@example.com · 010-1234-5678'; $('#invHint').classList.remove('err');
+  $('#invTitle').textContent = inviteMode==='one' ? '1:1 채팅' : '그룹 채팅 만들기'; $('#ktNewMenu').classList.remove('open'); drawInvite(); openSheet('#inviteSheet'); setTimeout(()=>$('#invInput').focus(),250); });
+$('#invForm').onsubmit=e=>{ e.preventDefault(); const raw=$('#invInput').value; const id=normId(raw); const hint=$('#invHint');
+  if(!id){ hint.textContent='이메일(예: name@mail.com)이나 휴대폰 번호(예: 010-1234-5678) 형식으로 입력해 주세요.'; hint.classList.add('err'); return; }
+  if(invitees.includes(id)){ hint.textContent='이미 추가한 사람이에요.'; hint.classList.add('err'); return; }
+  invitees.push(id); $('#invInput').value=''; hint.textContent=`${nameOf(id)}님을 추가했어요. 계속 추가할 수 있어요.`; hint.classList.remove('err'); drawInvite(); };
+$('#invGo').onclick=()=>{ if(!invitees.length) return;
+  const name = $('#invName').value.trim() || (invitees.length===1 ? nameOf(invitees[0]) : invitees.slice(0,3).map(nameOf).join(', ')+(invitees.length>3?' 외':''));
+  const r={id:'r'+Date.now(), name, members:[...invitees], unread:0, created:true, msgs:[{from:'me',text:'모임을 만들었어요! 같이 말씀 읽어요 📖',at:Date.now()}]};
+  rooms.push(r); saveRooms(); closeSheets(); drawRooms(); openRoom(r.id); };
+drawRooms();
 
 /* ---------- long press → animation ---------- */
 const lp = { timer:null, raf:null, fired:false, x:0, y:0, v:null, t0:0 };
@@ -972,9 +1153,9 @@ document.querySelectorAll('#tabbar button').forEach(b=>b.onclick=()=>{
   $('#reader').hidden=g; $('#groupView').hidden=!g;
   document.querySelector('.tb-icons').style.visibility=g?'hidden':'';
   $('#whereKo').textContent = g ? '모임' : `${BOOKS[state.b].kor} ${state.c+1} ${BOOKS[state.b].kor==='시편'?'편':'장'}`;
-  $('#whereBtn').disabled=g; closeSheets(); window.scrollTo(0,0);
+  $('#whereBtn').disabled=g; closeSheets(); window.scrollTo(0,0); if(g) drawRooms();
 });
-$('#grpCreate').onclick=()=>toast('모임 기능은 준비 중이에요');
+
 $('#fsDown').onclick=()=>{state.fs=Math.max(14,state.fs-1);store.set('fs',state.fs);applyPrefs();};
 $('#fsUp').onclick=()=>{state.fs=Math.min(30,state.fs+1);store.set('fs',state.fs);applyPrefs();};
 document.addEventListener('keydown',e=>{
