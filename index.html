@@ -328,6 +328,25 @@ main{padding:22px 0 140px}
 .inv-go:disabled{background:var(--chip);color:var(--muted)}
 .inv-note{font-size:12px;color:var(--muted);text-align:center;margin-top:10px}
 
+
+/* search: top sheet + RAG-style results */
+#searchSheet{top:0;bottom:auto;border-radius:0 0 20px 20px;transform:translateY(-105%);max-height:88vh;padding-top:env(safe-area-inset-top)}
+#searchSheet.show{transform:none}
+.s-modes{display:flex;gap:6px;margin-top:10px}
+.s-modes button{padding:6px 12px;border-radius:999px;background:var(--chip);font-size:13px;color:var(--muted)}
+.s-modes button.on{background:var(--ink);color:var(--paper)}
+.s-sec{font-size:13px;font-weight:700;color:var(--muted);margin:18px 0 8px;letter-spacing:.02em}
+.s-q{background:var(--bg);border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.9}
+.s-q .tg{display:inline-block;padding:1px 9px;border-radius:999px;background:color-mix(in srgb,var(--brand) 14%,transparent);color:var(--brand);font-weight:700;margin:0 3px 0 0}
+.s-q .tg.x{background:var(--chip);color:var(--muted);font-weight:400}
+.s-story{display:block;width:100%;text-align:left;padding:14px;border-radius:14px;background:color-mix(in srgb,#e0a92e 9%,var(--bg));border:1px solid color-mix(in srgb,#e0a92e 30%,transparent);margin-bottom:8px}
+.s-story .h{display:flex;align-items:baseline;gap:8px}
+.s-story .h b{font-size:16px}
+.s-story .h span{margin-left:auto;font-size:12px;color:#b07a10;font-weight:700;white-space:nowrap}
+.s-story .t{font-family:var(--serif);font-size:15px;line-height:1.7;margin:6px 0}
+.s-story .w{font-size:12px;color:var(--muted)}
+.result .how{font-size:11px;font-weight:400;color:var(--muted);margin-left:6px}
+
 /* long-press + animation */
 .verse{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 .verse.has-anim .vn::before{content:"✦";display:block;font-size:11px;color:var(--accent);margin-bottom:2px;animation:twinkle 2.4s ease-in-out infinite}
@@ -494,8 +513,9 @@ svg .now-lbl{fill:var(--accent);font-size:12px;font-weight:700;font-family:var(-
 <section class="sheet" id="searchSheet" aria-label="검색">
   <div class="sh-head"><h2>검색</h2><button class="icon" data-close>✕</button></div>
   <div class="sh-body">
-    <form class="search-box" id="searchForm"><input id="q" type="search" placeholder="예: 사랑, 목자, light, 요 3:16" autocomplete="off"><button>찾기</button></form>
-    <div class="hint" id="searchHint">한글이나 영어 단어로 찾거나, ‘요 3:16’ · ‘창세기 4’처럼 바로 이동할 수 있어요.</div>
+    <form class="search-box" id="searchForm"><input id="q" type="search" placeholder="생각나는 대로 물어보세요 · 예: 하나님이 세상 만든 이야기" autocomplete="off"><button>찾기</button></form>
+    <div class="s-modes" id="sModes"><button class="on" data-m="hybrid">하이브리드</button><button data-m="keyword">키워드</button><button data-m="vector">비슷한 말</button></div>
+    <div class="hint" id="searchHint">단어가 정확하지 않아도 괜찮아요. ‘요나 기적’, ‘걱정될 때 읽을 말씀’, ‘요 3:16’처럼 편하게 입력하세요.</div>
     <div class="progress" id="prog" hidden><i></i></div>
     <div id="results"></div>
   </div>
@@ -1120,29 +1140,59 @@ function parseRef(q){
   const c = +m[2]-1; if(c<0||c>=BOOKS[i].chapters) return null;
   return [i,c,m[3]?+m[3]:0];
 }
-let searching = 0;
+let searching = 0, sMode='hybrid', SDB=null;
+document.querySelectorAll('#sModes button').forEach(b=>b.onclick=()=>{ sMode=b.dataset.m; document.querySelectorAll('#sModes button').forEach(x=>x.classList.toggle('on',x===b)); if($('#q').value.trim()) $('#searchForm').requestSubmit(); });
+function loadScript(src){ return new Promise((res,rej)=>{ if(document.querySelector(`script[src="${src}"]`)) return res(); const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej; document.head.appendChild(s); }); }
+async function ensureIndex(onProg){
+  if(!SDB) SDB = await fetch('data/search-db.json').then(r=>r.json());
+  await loadScript('lib/search.js');
+  if(BibleSearch.ready()) return;
+  let done=0; const all = await Promise.all(BOOKS.map((B,i)=>loadBook(i).then(ch=>{ done++; onProg(done/66); return ch; }).catch(()=>[])));
+  BibleSearch.build(BOOKS, b=>all[b]);
+}
+const fmtRange = s => s.c===s.c2 ? (s.v===s.v2 ? `${BOOKS[s.b].kor} ${s.c+1}:${s.v}` : `${BOOKS[s.b].kor} ${s.c+1}:${s.v}–${s.v2}`) : `${BOOKS[s.b].kor} ${s.c+1}:${s.v}–${s.c2+1}:${s.v2}`;
 $('#searchForm').onsubmit = async e=>{
   e.preventDefault();
   const q = $('#q').value.trim(); if(!q) return;
   const ref = parseRef(q);
   if(ref){ closeSheets(); go(...ref); return; }
-  if(q.length<2){ $('#searchHint').textContent='두 글자 이상 입력해 주세요.'; return; }
   const token = ++searching;
   const prog = $('#prog'), bar = prog.firstElementChild;
-  prog.hidden=false; bar.style.width='0';
-  $('#results').innerHTML=''; $('#searchHint').textContent='찾는 중…';
-  const ql = q.toLowerCase(); const hits=[]; let done=0;
-  await Promise.all(BOOKS.map((B,i)=>loadBook(i).then(ch=>{ done++; if(token===searching) bar.style.width=(done/66*100)+'%'; return ch;}).catch(()=>[])))
-    .then(all=>all.forEach((chs,b)=>chs.forEach((vs,c)=>vs.forEach(([ko,en],v)=>{
-      if(ko.includes(q)) hits.push({b,c,v:v+1,t:ko});
-      else if(en.toLowerCase().includes(ql)) hits.push({b,c,v:v+1,t:en});
-    }))));
+  $('#results').innerHTML='';
+  if(/^[A-Za-z\s']+$/.test(q)){            // English: simple keyword search over KJV
+    $('#searchHint').textContent='찾는 중…';
+    const ql=q.toLowerCase(), hits=[];
+    const all=await Promise.all(BOOKS.map((B,i)=>loadBook(i).catch(()=>[])));
+    all.forEach((chs,b)=>chs.forEach((vs,c)=>vs.forEach(([ko,en],v)=>{ if(en.toLowerCase().includes(ql)) hits.push({b,c,v:v+1,t:en}); })));
+    if(token!==searching) return;
+    $('#searchHint').textContent = hits.length?`${hits.length}개 구절`:'찾는 구절이 없어요.';
+    const re=new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
+    $('#results').innerHTML = hits.slice(0,200).map((h,i)=>`<div class="result" data-i="${i}"><div class="ref">${BOOKS[h.b].kor} ${h.c+1}:${h.v}</div><div class="t">${esc(h.t).replace(re,m=>`<mark>${m}</mark>`)}</div></div>`).join('');
+    $('#results').querySelectorAll('.result').forEach(r=>r.onclick=()=>{const h=hits[+r.dataset.i];closeSheets();go(h.b,h.c,h.v);});
+    return;
+  }
+  if(!window.BibleSearch || !BibleSearch.ready()){ prog.hidden=false; bar.style.width='0'; $('#searchHint').textContent='처음 한 번만 성경 전체 색인을 만드는 중…'; }
+  await ensureIndex(f=>{ if(token===searching) bar.style.width=(f*100)+'%'; });
   if(token!==searching) return;
   prog.hidden=true;
-  $('#searchHint').textContent = hits.length?`${hits.length.toLocaleString()}개 구절${hits.length>300?' · 앞의 300개만 보여요':''}`:'찾는 구절이 없어요.';
-  const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
-  $('#results').innerHTML = hits.slice(0,300).map((h,i)=>`<div class="result" data-i="${i}"><div class="ref">${BOOKS[h.b].kor} ${h.c+1}:${h.v}</div><div class="t">${esc(h.t).replace(re,m=>`<mark>${m}</mark>`)}</div></div>`).join('');
-  $('#results').querySelectorAll('.result').forEach(r=>r.onclick=()=>{const h=hits[+r.dataset.i];closeSheets();go(h.b,h.c,h.v);});
+  const R = BibleSearch.search(q, SDB, sMode);
+  const hl = (t, words) => { let h=esc(t); [...new Set(words)].filter(w=>w.length>=1).sort((a,b)=>b.length-a.length).forEach(w=>{ h=h.replace(new RegExp(w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'),m=>`<mark>${m}</mark>`); }); return h; };
+  const words=[...R.terms,...R.expanded];
+  let h = `<div class="s-sec">① 질문 이해</div><div class="s-q">핵심어 ${R.terms.length?R.terms.map(t=>`<span class="tg">${esc(t)}</span>`).join(''):'<span class="tg x">없음</span>'}
+    ${R.expanded.length && sMode==='hybrid' ? `<br>함께 찾은 말 ${R.expanded.slice(0,8).map(t=>`<span class="tg x">${esc(t)}</span>`).join('')}`:''}</div>`;
+  if(R.stories.length){
+    h += `<div class="s-sec">② 이런 이야기를 찾으시나요?</div>`;
+    h += R.stories.map((x,i)=>{ const s=x.s; const first=(BibleSearch && null); return `<button class="s-story" data-s="${i}"><div class="h"><b>${esc(s.t)}</b><span>${fmtRange(s)}</span></div><div class="t" data-first="${i}"></div><div class="w">근거: ${x.matched.length?x.matched.slice(0,5).map(m=>`‘${esc(m)}’`).join(', ')+' 이(가) 이 이야기와 맞아요':'질문과 표현이 비슷해요'} · 출처: ${fmtRange(s)} (개역한글)</div></button>`; }).join('');
+  }
+  h += `<div class="s-sec">${R.stories.length?'③':'②'} 근거 구절 ${R.total?`· ${R.total.toLocaleString()}개 중 상위 ${Math.min(40,R.total)}개`:''}</div>`;
+  h += R.verses.length ? R.verses.map((r,i)=>`<div class="result" data-i="${i}"><div class="ref">${BOOKS[r.b].kor} ${r.c+1}:${r.v}<span class="how">${r.how==='context'?'맥락 추천':r.how==='keyword'?'같은 단어':'비슷한 말'}</span></div><div class="t">${hl(r.t, words)}</div></div>`).join('')
+       : `<div class="empty">찾는 구절이 없어요. 다른 표현으로 물어보세요.</div>`;
+  $('#searchHint').textContent = R.stories.length ? `‘${R.stories[0].s.t}’ 이야기를 먼저 추천해요.` : (R.total?`${R.total.toLocaleString()}개 구절에서 찾았어요.`:'');
+  $('#results').innerHTML = h;
+  // first verse of each recommended story
+  R.stories.forEach(async (x,i)=>{ const ch=(await loadBook(x.s.b))[x.s.c]; const el=$(`#results [data-first="${i}"]`); if(el&&ch) el.innerHTML = hl(ch[x.s.v-1][0], words); });
+  $('#results').querySelectorAll('.s-story').forEach(el=>el.onclick=()=>{ const s=R.stories[+el.dataset.s].s; closeSheets(); go(s.b,s.c,s.v); });
+  $('#results').querySelectorAll('.result').forEach(el=>el.onclick=()=>{ const r=R.verses[+el.dataset.i]; closeSheets(); go(r.b,r.c,r.v); });
 };
 
 /* ---------- prefs & keys ---------- */
