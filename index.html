@@ -871,7 +871,7 @@ let animCtl=null;
 function playAnim(n){
   const key=`${state.b}-${state.c}-${n}`;
   const make = window.VERSE_ANIM && VERSE_ANIM[key];
-  if(!make){ toast('영상은 지금 창세기 1:3, 사무엘상 17:49에만 준비돼 있어요'); return; }
+  if(!make){ toast('영상은 지금 창세기 1:3 · 사무엘상 17:49 · 요나 1:17에 준비돼 있어요'); return; }
   closeSheets(); clearSel();
   const st=$('#animStage'); const box=$('#anim');
   box.classList.remove('done','lit');
