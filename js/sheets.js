@@ -97,7 +97,7 @@ $('#searchForm').onsubmit = async e=>{
     h += R.stories.map((x,i)=>{ const s=x.s; const first=(BibleSearch && null); return `<button class="s-story" data-s="${i}"><div class="h"><b>${esc(s.t)}</b><span>${fmtRange(s)}</span></div><div class="t" data-first="${i}"></div><div class="w">근거: ${x.matched.length?x.matched.slice(0,5).map(m=>`‘${esc(m)}’`).join(', ')+' 이(가) 이 이야기와 맞아요':'질문과 표현이 비슷해요'} · 출처: ${fmtRange(s)} (개역한글)</div></button>`; }).join('');
   }
   h += `<div class="s-sec">${R.stories.length?'③':'②'} 근거 구절 ${R.total?`· ${R.total.toLocaleString()}개 중 상위 ${Math.min(40,R.total)}개`:''}</div>`;
-  h += R.verses.length ? R.verses.map((r,i)=>`<div class="result" data-i="${i}"><div class="ref">${BOOKS[r.b].kor} ${r.c+1}:${r.v}<span class="how">${r.how==='context'?'맥락 추천':r.how==='keyword'?'같은 단어':'비슷한 말'}</span></div><div class="t">${hl(r.t, words)}</div></div>`).join('')
+  h += R.verses.length ? R.verses.map((r,i)=>`<div class="result" data-i="${i}"><div class="ref">${BOOKS[r.b].kor} ${r.c+1}:${r.v}<span class="how">${r.how==='context'?'이야기 추천':r.how==='keyword'?'같은 단어':'비슷한 뜻'}</span></div><div class="t">${hl(r.t, words)}</div></div>`).join('')
        : `<div class="empty">찾는 구절이 없어요. 다른 표현으로 물어보세요.</div>`;
   $('#searchHint').textContent = R.stories.length ? `‘${R.stories[0].s.t}’ 이야기를 먼저 추천해요.` : (R.total?`${R.total.toLocaleString()}개 구절에서 찾았어요.`:'');
   $('#results').innerHTML = h;

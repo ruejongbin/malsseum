@@ -65,3 +65,6 @@ input[type=range]{accent-color:var(--primary)}
 .plan li b{font-weight:600}
 b,strong{font-weight:600}
 a{color:var(--primary)}
+/* 검색 방식: 비슷한 말 / 키워드 — 파란 알약 */
+.s-modes button{border-radius:999px;background:var(--soft);color:var(--ink);font-size:14px;padding:8px 16px}
+.s-modes button.on{background:var(--primary);color:#fff}
