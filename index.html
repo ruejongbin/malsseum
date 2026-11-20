@@ -11,10 +11,11 @@
   if(q.indexOf('inframe')>=0||inApp) document.documentElement.classList.add('is-app');
   if(q.indexOf('inframe')>=0) document.documentElement.classList.add('inframe');})();
 </script>
-<meta name="theme-color" content="#4f67a8">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="말씀">
 <meta name="format-detection" content="telephone=no">
 <link rel="manifest" href="manifest.webmanifest">
@@ -28,7 +29,7 @@
 :root{
   --bg:#f7f3ec; --paper:#fffdf8; --ink:#2a2420; --muted:#8a7f74; --line:#e7dfd2;
   --accent:#8c3b2e; --accent-soft:#f3e3dc; --hl:#fbe9a6; --chip:#efe8dc;
-  --fs:19px;
+  --fs:17px;
   --serif:"Noto Serif KR",serif; --sans:"Noto Sans KR",system-ui,sans-serif; --en:"EB Garamond","Noto Serif KR",serif;
 }
 @media (prefers-color-scheme:dark){
@@ -491,6 +492,119 @@ html.inframe .tabbar{padding-bottom:24px}
 .install .t b{font-size:14.5px}
 .install .go{background:var(--brand);color:#fff;padding:9px 14px;border-radius:999px;font-weight:600;font-size:13.5px;white-space:nowrap}
 .install .x{color:var(--muted);padding:6px;font-size:15px}
+
+/* ── 1단계: 흰 배경 ── */
+@media (prefers-color-scheme:light){
+  :root{--bg:#ffffff;--paper:#ffffff;--ink:#1f2330;--muted:#8a8f9c;--line:#ececf1;--chip:#f2f3f7;--soft:#f5f6f9}
+  .ch-seg,.xr-item,.s-q,.why-v,.vz-stage,.search-box input,.inv-add input,.inv-name input{background:var(--soft)}
+}
+:root{--soft:color-mix(in srgb,var(--ink) 5%,var(--bg))}
+/* 읽기 방식 */
+.readmode{display:flex;gap:6px;padding:12px 20px 4px}
+.readmode button{padding:7px 14px;border-radius:999px;font-size:13.5px;color:var(--muted);background:var(--soft);font-weight:500}
+.readmode button.on{background:var(--brand);color:#fff}
+.readmode[hidden]{display:none}
+/* 탭 화면 */
+.tabview{flex:1;padding:28px 22px 140px}
+.tabview[hidden]{display:none}
+.soon{text-align:center;padding:36px 8px 10px}
+.soon .ic{width:84px;height:84px;margin:0 auto 16px;border-radius:26px;display:grid;place-items:center;background:color-mix(in srgb,var(--brand) 10%,var(--bg))}
+.soon .ic svg{width:44px;height:44px;stroke:var(--brand);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.soon h3{font-size:21px;margin:0 0 8px}
+.soon p{color:var(--muted);line-height:1.7;margin:0;font-size:15px}
+.soon .tag{display:inline-block;margin-top:14px;padding:5px 12px;border-radius:999px;background:var(--soft);color:var(--muted);font-size:12px}
+.plan{margin:26px 0 0;padding:0;list-style:none}
+.plan li{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:14px;background:var(--soft);margin-bottom:8px;font-size:14.5px;line-height:1.5}
+.plan li b{display:block;font-size:15px;margin-bottom:2px}
+.plan li span.e{font-size:22px;line-height:1}
+.prof-top{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.prof-top .lamp{width:64px;height:64px;border-radius:20px;display:grid;place-items:center;font-size:32px;background:color-mix(in srgb,#e0a92e 14%,var(--bg))}
+.prof-top b{font-size:19px;display:block}
+.prof-top small{color:var(--muted);font-size:13px}
+.prof-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.prof-stats div{background:var(--soft);border-radius:14px;padding:14px 8px;text-align:center}
+.prof-stats b{display:block;font-size:22px;color:var(--brand)}
+.prof-stats span{font-size:12px;color:var(--muted)}
+.prof-menu button{display:flex;align-items:center;justify-content:space-between;width:100%;padding:16px 4px;border-bottom:1px solid var(--line);font-size:15.5px;text-align:left}
+.prof-menu button::after{content:"›";color:var(--muted);font-size:20px}
+/* 글자 크기 */
+.fs-box{padding:4px 0 8px}
+.fs-row{display:flex;align-items:center;gap:12px}
+.fs-row .a{color:var(--muted)}
+.fs-row input[type=range]{flex:1;accent-color:var(--brand);height:28px}
+.fs-presets{display:flex;gap:6px;margin:12px 0}
+.fs-presets button{flex:1;padding:9px 0;border-radius:10px;background:var(--soft);font-size:13px;color:var(--muted)}
+.fs-presets button.on{background:var(--brand);color:#fff}
+.fs-preview{padding:14px 16px;border-radius:14px;background:var(--soft);font-size:var(--fs);line-height:1.75;word-break:keep-all}
+.fs-preview small{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+
+/* ════ 디자인 시스템 (design.md 적용: 흰 캔버스 · 파치먼트 · 단일 블루 · 그림자 없음) ════ */
+:root{
+  --primary:#0066cc; --primary-focus:#0071e3;
+  --bg:#ffffff; --paper:#ffffff; --soft:#f5f5f7; --pearl:#fafafc;
+  --ink:#1d1d1f; --muted:#6e6e73; --muted2:#7a7a7a; --line:#e0e0e0; --hair:rgba(0,0,0,.08);
+  --brand:var(--primary); --brand2:var(--primary); --accent:var(--primary); --accent-soft:#f5f5f7; --chip:#f5f5f7; --kjv:#515154;
+  --sans:system-ui,-apple-system,"SF Pro Text","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  --r-sm:8px; --r-md:11px; --r-lg:18px;
+}
+@media (prefers-color-scheme:dark){:root{
+  --primary:#2997ff; --bg:#000000; --paper:#1c1c1e; --soft:#1c1c1e; --pearl:#272729;
+  --ink:#f5f5f7; --muted:#a1a1a6; --line:#2a2a2c; --hair:rgba(255,255,255,.1);
+  --brand:#2997ff; --brand2:#2997ff; --accent:#2997ff; --accent-soft:#1c1c1e; --chip:#272729; --kjv:#cccccc}}
+html,body{font-family:var(--sans);letter-spacing:-.01em}
+body{-webkit-font-smoothing:antialiased}
+/* 상단바: 반투명 흰 유리 */
+header.topbar{background:color-mix(in srgb,var(--bg) 80%,transparent);color:var(--ink);
+  backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);box-shadow:none;border-bottom:1px solid var(--hair);
+  padding:calc(env(safe-area-inset-top) + 8px) 10px 8px 18px;align-items:center}
+header.topbar .where{color:var(--ink);font-size:22px;font-weight:600;letter-spacing:-.022em;border-radius:var(--r-sm)}
+header.topbar .where:hover{background:var(--soft)}
+header.topbar .icon{color:var(--ink)}
+header.topbar .icon svg{stroke:var(--ink)}
+.ver-chip{background:var(--soft)!important;color:var(--ink)!important}
+/* 하단 탭: 반투명 유리 */
+.tabbar{background:color-mix(in srgb,var(--pearl) 82%,transparent);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-top:1px solid var(--hair)}
+.tabbar button{font-size:10.5px;color:var(--muted2);letter-spacing:0}
+.tabbar svg{stroke-width:1.6}
+.tabbar button.on{color:var(--primary)}
+.tabbar button.on svg{fill:none;stroke-width:2}
+/* 그림자는 쓰지 않는다 — 떠 있는 면은 헤어라인으로 */
+.sheet,.more-menu,.ver-menu,.install,.toast,.backchip,.actions{box-shadow:none!important}
+.sheet{border-radius:var(--r-lg) var(--r-lg) 0 0;border-top:1px solid var(--hair)}
+.more-menu,.ver-menu{border:1px solid var(--hair);border-radius:var(--r-lg);background:color-mix(in srgb,var(--pearl) 92%,transparent);
+  backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px)}
+.install{border:1px solid var(--hair);border-radius:var(--r-lg);background:color-mix(in srgb,var(--pearl) 90%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.sh-head h2{font-size:21px;font-weight:600;letter-spacing:-.02em}
+/* 버튼: 파란 알약 하나, 누르면 0.95 */
+.ch-start .pri,.install .go,.readmode button.on,.fs-presets button.on,.inv-go,.grp-empty button{background:var(--primary);color:#fff;border-radius:999px;font-weight:400}
+.ch-start .sec{background:transparent;color:var(--primary);border:1px solid var(--primary);border-radius:999px}
+.ch-start button,.install .go,.readmode button,.fs-presets button,.prof-menu button,.plan li,.xr-item,.ch-seg,.s-story,.xr,.tabbar button,.icon{transition:transform .12s}
+.ch-start button:active,.install .go:active,.readmode button:active,.fs-presets button:active,.xr-item:active,.ch-seg:active,.s-story:active,.tabbar button:active,.icon:active,.xr:active{transform:scale(.95)}
+button:focus-visible{outline:2px solid var(--primary-focus);outline-offset:2px}
+.readmode button{border-radius:999px;background:var(--soft);color:var(--ink);font-weight:400;padding:8px 16px;font-size:14px}
+.fs-presets button{border-radius:999px;background:var(--soft);color:var(--ink);font-weight:400}
+input[type=range]{accent-color:var(--primary)}
+/* 카드: 파치먼트 면, 18px, 테두리·그림자 없음 */
+.ch-seg,.xr-item,.s-q,.why-v,.vz-stage,.plan li,.prof-stats div,.fs-preview,.s-story{background:var(--soft);border:0;border-radius:var(--r-lg)}
+.ch-seg.cur{background:color-mix(in srgb,var(--primary) 8%,var(--soft));box-shadow:inset 0 0 0 2px var(--primary-focus)!important}
+.search-box input,.inv-add input,.inv-name input{background:var(--soft);border:1px solid var(--hair);border-radius:999px;padding:12px 20px;font-size:17px}
+/* 본문 */
+.tip{background:var(--soft);border-radius:var(--r-lg);color:var(--ink)}
+.tip b{color:var(--primary);font-weight:600}
+.verse.sel{background:color-mix(in srgb,var(--primary) 7%,transparent)}
+.vn{color:var(--muted)}
+.mode-both .en{color:var(--kjv)}
+.soon h3{font-size:28px;font-weight:600;letter-spacing:-.02em}
+.soon p{font-size:17px;line-height:1.47}
+.soon .ic{border-radius:var(--r-lg);background:var(--soft)}
+.prof-top .lamp{border-radius:var(--r-lg);background:var(--soft)}
+.prof-top b{font-size:21px;font-weight:600}
+.prof-stats b{font-weight:600;color:var(--ink)}
+.prof-menu button{font-size:17px;border-bottom:1px solid var(--hair)}
+.plan li b{font-weight:600}
+b,strong{font-weight:600}
+a{color:var(--primary)}
 </style>
 </head>
 <body>
@@ -510,7 +624,23 @@ html.inframe .tabbar{padding-bottom:24px}
       <button class="icon" id="setBtn" aria-label="설정"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="12" cy="19" r="1.3"/></svg></button>
     </div>
   </header>
+  <div class="readmode" id="readMode"><button data-r="canon" class="on">성경 순서</button><button data-r="chrono">🕰 시대순</button></div>
   <main id="reader"><div class="loading">불러오는 중…</div></main>
+
+  <section class="tabview" id="metaView" hidden>
+    <div class="soon"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg></div>
+      <h3>성경의 현장 속으로</h3><p>지도에서 장소를 고르면 그 장면 안으로<br>걸어 들어가요.</p><span class="tag">준비 중</span></div>
+    <ul class="plan">
+      <li><span class="e">🌊</span><div><b>요나의 배</b>폭풍 치는 갑판 위에서 요나 1장을 들어요</div></li>
+      <li><span class="e">🪨</span><div><b>엘라 골짜기</b>건너편 골리앗을 올려다봐요 · 사무엘상 17장</div></li>
+      <li><span class="e">🗺</span><div><b>여정 지도</b>지금 이야기 속 내 위치에서 다음 장소로</div></li>
+    </ul>
+  </section>
+  <section class="tabview" id="shortsView" hidden>
+    <div class="soon"><div class="ic"><svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="m10.5 9 4 3-4 3z"/></svg></div>
+      <h3>목사님 말씀 쇼츠</h3><p>설교의 핵심만 짧은 세로 영상으로.<br>보다가 누르면 그 성경 구절로 바로 가요.</p><span class="tag">준비 중</span></div>
+  </section>
+  <section class="tabview" id="profileView" hidden></section>
   <section id="groupView" hidden>
     <div id="chatList">
       <div class="kt-head"><div class="kt-title">채팅 <span>▾</span></div>
@@ -536,8 +666,10 @@ html.inframe .tabbar{padding-bottom:24px}
   </section>
 </div>
 <nav class="tabbar" id="tabbar">
-  <button data-tab="bible" class="on"><svg viewBox="0 0 24 24"><path d="M12 6.5C10 5 7 4.5 3.5 5v14c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5z"/><path d="M12 6.5V20"/></svg><span>성경</span></button>
-  <button data-tab="group"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V10l7-5 7 5v11M10 21v-5h4v5M12 2v3M10.5 3.5h3"/></svg><span>모임</span></button>
+  <button data-tab="bible" class="on"><svg viewBox="0 0 24 24"><path d="M12 6.5C10 5 7 4.5 3.5 5v14c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5z"/><path d="M12 6.5V20"/></svg><span>말씀</span></button>
+  <button data-tab="meta"><svg viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg><span>메타버스</span></button>
+  <button data-tab="shorts"><svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="m10.5 9 4 3-4 3z"/></svg><span>말씀 쇼츠</span></button>
+  <button data-tab="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span>프로필</span></button>
 </nav>
 
 <div class="toast" id="toast"></div>
@@ -576,7 +708,6 @@ html.inframe .tabbar{padding-bottom:24px}
   <div class="sh-body" id="bmBody"></div>
 </section>
 <div class="more-menu" id="moreMenu">
-  <button id="mChrono"><svg viewBox="0 0 24 24"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg><span><b>시대순으로 읽기</b><small>일어난 순서대로 하나의 이야기로</small></span></button>
   <button id="mSettings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><span><b>설정</b><small>글자 크기, 출처</small></span></button>
 </div>
 <section class="sheet" id="chronoSheet" aria-label="시대순으로 읽기">
@@ -606,7 +737,10 @@ html.inframe .tabbar{padding-bottom:24px}
 <section class="sheet" id="setSheet" aria-label="설정">
   <div class="sh-head"><h2>설정</h2><button class="icon" data-close>✕</button></div>
   <div class="sh-body">
-    <div class="row"><span>글자 크기</span><div class="stepper"><button id="fsDown">−</button><span id="fsVal">19</span><button id="fsUp">+</button></div></div>
+    <div class="fs-box"><div class="row" style="margin-bottom:8px"><span>글자 크기</span><span id="fsVal" style="color:var(--muted)">18</span></div>
+      <div class="fs-row"><span class="a" style="font-size:13px">가</span><input type="range" id="fsRange" min="14" max="28" step="1"><span class="a" style="font-size:22px">가</span></div>
+      <div class="fs-presets" id="fsPresets"><button data-v="15">작게</button><button data-v="17">보통</button><button data-v="20">크게</button><button data-v="24">아주 크게</button></div>
+      <div class="fs-preview"><small>미리 보기</small>태초에 하나님이 천지를 창조하시니라</div></div>
     <p class="credit">본문: 성경전서 개역한글판(1961, 대한성서공회 — 저작권 만료) · King James Version(퍼블릭 도메인).<br>
     텍스트 데이터 출처: github.com/sungcheolkim78/py_kbible, github.com/aruljohn/Bible-kjv.<br>
     형광펜과 저장한 구절은 이 기기의 브라우저에만 보관돼요.</p>
@@ -621,7 +755,7 @@ const store = {
   set(k, v){ try{ localStorage.setItem('bible.'+k, JSON.stringify(v)); }catch(e){} }
 };
 let BOOKS = [], cache = {};
-const state = { b:0, c:0, mode: store.get('mode','both'), fs: store.get('fs',19), sel:new Set() };
+const state = { b:0, c:0, mode: store.get('mode','both'), fs: store.get('fs',17), sel:new Set() };
 let marks = store.get('marks', {});   // "b-c-v": 1
 let saved = store.get('saved', []);   // [{b,c,v,t}]
 
@@ -636,7 +770,8 @@ const esc = s => s.replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','
 /* ---------- reader ---------- */
 function applyPrefs(){
   document.documentElement.style.setProperty('--fs', state.fs+'px');
-  $('#fsVal').textContent = state.fs;
+  $('#fsVal').textContent = state.fs+'px'; $('#fsRange').value=state.fs;
+  document.querySelectorAll('#fsPresets button').forEach(b=>b.classList.toggle('on',+b.dataset.v===state.fs));
   $('#reader').className = 'mode-'+state.mode;
   document.querySelectorAll('#modeSeg button').forEach(b=>b.classList.toggle('on', b.dataset.m===state.mode));
   $('#verChip').textContent = {both:'개역한글 | KJV (대조)', ko:'개역한글', en:'KJV'}[state.mode];
@@ -654,6 +789,8 @@ async function render(scrollVerse){
   const vdata = await loadViz(state.b); const vch = vdata ? (vdata.verses[state.c]||[]) : [];
   const xrc = ((await loadXref(state.b))||[])[state.c] || [];
   const unit = B.kor==='시편'?'편':'장';
+  document.querySelectorAll('#readMode button').forEach(b=>b.classList.toggle('on',(b.dataset.r==='chrono')===!!state.chrono));
+  {const d=new Date().toLocaleDateString('sv'),rd=store.get('readDays',[]); if(!rd.includes(d)){rd.push(d);store.set('readDays',rd.slice(-400));}}
   let h = chronoBar();
   if(state.chrono && chronoPos()!=null) store.set('chronoAt',[state.b,state.c]);
   if(vdata && !store.get('tipDone',0)) h += `<div class="tip"><span>구절을 눌러 보세요. <b>누가 · 어디서 · 언제</b>를 그림으로 보여드려요.<br>✦ 표시가 있는 구절은 <b>꾹 누르면</b> 애니메이션이 나와요.</span><button id="tipClose">닫기</button></div>`;
@@ -790,7 +927,11 @@ function drawChrono(){
 $('#setBtn').onclick=e=>{ e.stopPropagation(); $('#moreMenu').classList.toggle('open'); };
 document.addEventListener('click',e=>{ if(!e.target.closest('#moreMenu')) $('#moreMenu').classList.remove('open'); if(!e.target.closest('#ktNewMenu')&&!e.target.closest('#ktNew')) $('#ktNewMenu').classList.remove('open'); });
 $('#mSettings').onclick=()=>{ $('#moreMenu').classList.remove('open'); openSheet('#setSheet'); };
-$('#mChrono').onclick=async()=>{ $('#moreMenu').classList.remove('open'); await loadChrono(); drawChrono(); openSheet('#chronoSheet'); };
+const openChrono=async()=>{ $('#moreMenu').classList.remove('open'); await loadChrono(); drawChrono(); openSheet('#chronoSheet'); };
+document.querySelectorAll('#readMode button').forEach(b=>b.onclick=async()=>{
+  if(b.dataset.r==='chrono') openChrono();
+  else if(state.chrono){ state.chrono=false; store.set('chrono',false); render(); }
+});
 if(state.chrono) loadChrono().then(()=>{ if(BOOKS.length) render(); });
 
 
@@ -1290,17 +1431,37 @@ $('#searchForm').onsubmit = async e=>{
 document.querySelectorAll('#modeSeg button').forEach(b=>b.onclick=e=>{e.stopPropagation();state.mode=b.dataset.m;store.set('mode',state.mode);applyPrefs();$('#modeSeg').classList.remove('open');});
 $('#verBtn').onclick=e=>{e.stopPropagation();$('#modeSeg').classList.toggle('open');};
 document.addEventListener('click',()=>$('#modeSeg').classList.remove('open'));
-document.querySelectorAll('#tabbar button').forEach(b=>b.onclick=()=>{
-  const g=b.dataset.tab==='group';
-  document.querySelectorAll('#tabbar button').forEach(x=>x.classList.toggle('on',x===b));
-  $('#reader').hidden=g; $('#groupView').hidden=!g;
+const TABS={bible:'#reader',meta:'#metaView',shorts:'#shortsView',profile:'#profileView'};
+const TABNAME={meta:'메타버스',shorts:'말씀 쇼츠',profile:'프로필'};
+function drawProfile(){
+  const mk=Object.keys(marks).length, sv=saved.length, days=store.get('readDays',[]).length;
+  $('#profileView').innerHTML=`<div class="prof-top"><div class="lamp">🪔</div><div><b>나의 말씀</b><small>등불은 읽을수록 밝아져요 (준비 중)</small></div></div>
+  <div class="prof-stats"><div><b>${sv}</b><span>저장한 구절</span></div><div><b>${mk}</b><span>형광펜</span></div><div><b>${Math.max(days,1)}</b><span>읽은 날</span></div></div>
+  <div class="prof-menu">
+    <button id="pfSaved">저장한 구절</button>
+    <button id="pfChrono">시대순 읽기 진도</button>
+    <button id="pfSet">설정 · 글자 크기</button>
+  </div>
+  <ul class="plan"><li><span class="e">📚</span><div><b>66권 책장 · 모은 책갈피</b>다 읽은 책과 변신 책갈피가 여기 모여요 (준비 중)</div></li></ul>`;
+  $('#pfSaved').onclick=()=>{drawSaved();openSheet('#bmSheet');};
+  $('#pfChrono').onclick=()=>openChrono();
+  $('#pfSet').onclick=()=>openSheet('#setSheet');
+}
+function showTab(t){
+  document.querySelectorAll('#tabbar button').forEach(x=>x.classList.toggle('on',x.dataset.tab===t));
+  Object.entries(TABS).forEach(([k,sel])=>$(sel).hidden=k!==t);
+  $('#groupView').hidden=true; $('#readMode').hidden=t!=='bible';
+  const g=t!=='bible';
   document.querySelector('.tb-icons').style.visibility=g?'hidden':'';
-  $('#whereKo').textContent = g ? '모임' : `${BOOKS[state.b].kor} ${state.c+1} ${BOOKS[state.b].kor==='시편'?'편':'장'}`;
-  $('#whereBtn').disabled=g; closeSheets(); window.scrollTo(0,0); if(g) drawRooms();
-});
+  $('#whereKo').textContent = g ? TABNAME[t] : `${BOOKS[state.b].kor} ${state.c+1} ${BOOKS[state.b].kor==='시편'?'편':'장'}`;
+  $('#whereBtn').disabled=g; closeSheets(); window.scrollTo(0,0);
+  if(t==='profile') drawProfile();
+}
+document.querySelectorAll('#tabbar button').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
 
-$('#fsDown').onclick=()=>{state.fs=Math.max(14,state.fs-1);store.set('fs',state.fs);applyPrefs();};
-$('#fsUp').onclick=()=>{state.fs=Math.min(30,state.fs+1);store.set('fs',state.fs);applyPrefs();};
+const setFs=v=>{state.fs=Math.max(14,Math.min(28,+v));store.set('fs',state.fs);applyPrefs();};
+$('#fsRange').oninput=e=>setFs(e.target.value);
+document.querySelectorAll('#fsPresets button').forEach(b=>b.onclick=()=>setFs(b.dataset.v));
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){ e.target.blur&&e.target.blur(); closeSheets(); clearSel(); return; }
   if(e.target.matches('input')) return;
