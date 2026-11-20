@@ -51,7 +51,7 @@ async function openXr(n){
 async function rideTo(from,to){
   closeSheets(); clearSel();
   try{
-    const mod = await import('./lib/loop.js');
+    const mod = await import(new URL('lib/loop.js', document.baseURI).href);
     var info = await connectionInfo(from,to);
     await mod.ride({from, to, fromLabel: refLabel(from), toLabel: refLabel(to), books: BOOKS, note: info.note || info.kind.d, kind: info.kind.k});
   }catch(e){ console.warn('ride failed', e); }

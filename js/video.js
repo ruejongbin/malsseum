@@ -29,7 +29,7 @@ function playAnim(n){
   new MutationObserver(()=>box.classList.toggle('lit', st.classList.contains('lit'))).observe(st,{attributes:true,attributeFilter:['class']});
   box.classList.add('show');
 }
-function closeAnim(){ const box=$('#anim'); box.classList.remove('show'); setTimeout(()=>{ animCtl&&animCtl.stop(); animCtl=null; $('#animStage').innerHTML=''; $('#animStage').className=''; box.classList.remove('done','lit'); },400); }
+function closeAnim(){ const box=$('#anim'); box.classList.remove('show'); setTimeout(()=>{ animCtl&&animCtl.stop(); animCtl=null; $('#animStage').innerHTML=''; $('#animStage').className=''; box.classList.remove('done','lit','land'); },400); }
 $('#aPlay').onclick=()=>playAnim(vz.n);
 $('#animClose').onclick=closeAnim; $('#animDone').onclick=closeAnim;
 $('#animAgain').onclick=()=>{ $('#anim').classList.remove('done'); animCtl&&animCtl.restart(); };

@@ -68,3 +68,18 @@ a{color:var(--primary)}
 /* 검색 방식: 비슷한 말 / 키워드 — 파란 알약 */
 .s-modes button{border-radius:999px;background:var(--soft);color:var(--ink);font-size:14px;padding:8px 16px}
 .s-modes button.on{background:var(--primary);color:#fff}
+.bk-btn{padding:7px 14px;border-radius:999px;background:var(--soft);color:var(--primary);font-size:14px;cursor:pointer}
+/* 최근 찾은 말 */
+.rc-head{display:flex;justify-content:space-between;align-items:center;margin:18px 2px 6px;font-size:14px;font-weight:600}
+.rc-head button{color:var(--primary);font-size:13px;font-weight:400}
+.rc-item{display:flex;align-items:center;border-bottom:1px solid var(--hair)}
+.rc-q{flex:1;display:flex;align-items:center;gap:10px;padding:13px 2px;text-align:left;font-size:16px}
+.rc-q svg{width:18px;height:18px;fill:none;stroke:var(--muted);stroke-width:1.6;stroke-linecap:round;flex:none}
+.rc-x{color:var(--muted);padding:10px;font-size:13px}
+/* 영상은 가로로: 세로로 든 휴대폰에서는 화면을 90° 돌려 가득 채운다 */
+@media (orientation:portrait){
+  #anim.land{inset:auto;top:50%;left:50%;width:100vh;width:100dvh;height:100vw;transform:translate(-50%,-50%) rotate(90deg);background:#eeebe3}
+  #anim.land .an-close{top:14px;right:14px}
+  #anim.land .an-ui{bottom:18px}
+}
+#anim.land .an-close{background:rgba(29,29,31,.45)}

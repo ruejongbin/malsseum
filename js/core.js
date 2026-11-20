@@ -6,8 +6,13 @@ const store = {
 };
 let BOOKS = [], cache = {};
 const state = { b:0, c:0, mode: store.get('mode','both'), fs: store.get('fs',17), sel:new Set() };
-let marks = store.get('marks', {});   // "b-c-v": 1
-let saved = store.get('saved', []);   // [{b,c,v,t}]
+// 하이라이트·저장한 구절은 js/userdata.js(UD)에 저장 — 아래는 화면용으로 만든 보기
+let marks = {}, saved = [];   // marks["b-c-v"] = 기록 id, saved = [{id,b,c,v,t}]
+function refreshViews(){
+  marks = {}; UD.list('highlight').forEach(r=>{ for(let v=r.ref.v; v<=(r.ref.v2||r.ref.v); v++) marks[`${r.ref.b}-${r.ref.c}-${v}`]=r.id; });
+  saved = UD.list('saved').sort((a,b)=>b.createdAt-a.createdAt).map(r=>({id:r.id,b:r.ref.b,c:r.ref.c,v:r.ref.v,t:r.data.text}));
+}
+refreshViews(); UD.onChange(refreshViews);
 
 const pad = n => String(n).padStart(2,'0');
 async function loadBook(i){

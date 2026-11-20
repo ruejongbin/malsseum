@@ -98,15 +98,16 @@ $('#aCopy').onclick = async ()=>{
 };
 $('#aMark').onclick = ()=>{
   const vs=[...state.sel]; const allOn = vs.every(v=>marks[`${state.b}-${state.c}-${v}`]);
-  vs.forEach(v=>{ const k=`${state.b}-${state.c}-${v}`; if(allOn) delete marks[k]; else marks[k]=1;
+  vs.forEach(v=>{ const k=`${state.b}-${state.c}-${v}`;
+    if(allOn) UD.remove(marks[k]); else if(!marks[k]) UD.add('highlight',{b:state.b,c:state.c,v},{color:'yellow',style:'full'});
     document.getElementById('v'+v).classList.toggle('mark',!allOn); });
-  store.set('marks',marks); toast(allOn?'형광펜을 지웠어요':'형광펜을 칠했어요'); clearSel();
+  toast(allOn?'형광펜을 지웠어요':'형광펜을 칠했어요'); clearSel();
 };
 $('#aSave').onclick = async ()=>{
   const ch = (await loadBook(state.b))[state.c];
   [...state.sel].sort((a,b)=>a-b).forEach(v=>{
-    if(!saved.some(s=>s.b===state.b&&s.c===state.c&&s.v===v)) saved.unshift({b:state.b,c:state.c,v,t:ch[v-1][0]||ch[v-1][1]});
+    if(!saved.some(s=>s.b===state.b&&s.c===state.c&&s.v===v)) UD.add('saved',{b:state.b,c:state.c,v},{text:ch[v-1][0]||ch[v-1][1]});
   });
-  store.set('saved',saved); toast('저장했어요'); clearSel();
+  toast('저장했어요'); clearSel();
 };
 ['#aCopy','#aMark','#aSave'].forEach(id=>{ const f=$(id).onclick; $(id).onclick=async()=>{ const n=[...state.sel]; await f(); closeSheets(); }; });

@@ -29,14 +29,14 @@ function showChapters(b){
   $('#navBody').scrollTop=0;
 }
 $('#whereBtn').onclick = showBooks;
-$('#searchBtn').onclick = ()=>{ openSheet('#searchSheet'); setTimeout(()=>$('#q').focus(),250); };
+$('#searchBtn').onclick = ()=>{ if(!$('#q').value.trim()) drawRecent(); openSheet('#searchSheet'); setTimeout(()=>$('#q').focus(),250); };
 $('#bmBtn').onclick = ()=>{ drawSaved(); openSheet('#bmSheet'); };
 
 function drawSaved(){
   if(!saved.length){ $('#bmBody').innerHTML='<div class="empty">아직 저장한 구절이 없어요.<br>본문에서 구절을 눌러 선택한 뒤 ‘저장’을 누르세요.</div>'; return; }
   $('#bmBody').innerHTML = saved.map((s,i)=>`<div class="bm"><div class="result" data-i="${i}"><div class="ref">${BOOKS[s.b].kor} ${s.c+1}:${s.v}</div><div class="t">${esc(s.t)}</div></div><button class="del" data-d="${i}">삭제</button></div>`).join('');
   $('#bmBody').querySelectorAll('.result').forEach(r=>r.onclick=()=>{const s=saved[+r.dataset.i];closeSheets();go(s.b,s.c,s.v);});
-  $('#bmBody').querySelectorAll('[data-d]').forEach(d=>d.onclick=()=>{saved.splice(+d.dataset.d,1);store.set('saved',saved);drawSaved();});
+  $('#bmBody').querySelectorAll('[data-d]').forEach(d=>d.onclick=()=>{UD.remove(saved[+d.dataset.d].id);drawSaved();});
 }
 
 /* ---------- search ---------- */
@@ -52,7 +52,20 @@ function parseRef(q){
   const c = +m[2]-1; if(c<0||c>=BOOKS[i].chapters) return null;
   return [i,c,m[3]?+m[3]:0];
 }
-let searching = 0, sMode='hybrid', SDB=null;
+let searching = 0, sMode='keyword', SDB=null;
+/* 최근 찾은 말 */
+const RECENT_MAX=12;
+function addRecent(q){ let r=store.get('recentQ',[]).filter(x=>x!==q); r.unshift(q); store.set('recentQ',r.slice(0,RECENT_MAX)); }
+function drawRecent(){
+  const r=store.get('recentQ',[]);
+  $('#searchHint').textContent = r.length ? '' : '단어를 넣거나 ‘요 3:16’처럼 장절을 입력해 보세요.';
+  $('#results').innerHTML = r.length ? `<div class="rc-head"><span>최근 찾은 말</span><button id="rcClear">전체 지우기</button></div>`+
+    r.map((q,i)=>`<div class="rc-item"><button class="rc-q" data-q="${i}"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>${esc(q)}</button><button class="rc-x" data-x="${i}" aria-label="지우기">✕</button></div>`).join('') : '';
+  $('#results').querySelectorAll('.rc-q').forEach(b=>b.onclick=()=>{ $('#q').value=r[+b.dataset.q]; $('#searchForm').requestSubmit(); });
+  $('#results').querySelectorAll('.rc-x').forEach(b=>b.onclick=()=>{ r.splice(+b.dataset.x,1); store.set('recentQ',r); drawRecent(); });
+  if($('#rcClear')) $('#rcClear').onclick=()=>{ store.set('recentQ',[]); drawRecent(); };
+}
+$('#q').addEventListener('input',()=>{ if(!$('#q').value.trim()) { searching++; $('#prog').hidden=true; drawRecent(); } });
 document.querySelectorAll('#sModes button').forEach(b=>b.onclick=()=>{ sMode=b.dataset.m; document.querySelectorAll('#sModes button').forEach(x=>x.classList.toggle('on',x===b)); if($('#q').value.trim()) $('#searchForm').requestSubmit(); });
 function loadScript(src){ return new Promise((res,rej)=>{ if(document.querySelector(`script[src="${src}"]`)) return res(); const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej; document.head.appendChild(s); }); }
 async function ensureIndex(onProg){
@@ -66,6 +79,7 @@ const fmtRange = s => s.c===s.c2 ? (s.v===s.v2 ? `${BOOKS[s.b].kor} ${s.c+1}:${s
 $('#searchForm').onsubmit = async e=>{
   e.preventDefault();
   const q = $('#q').value.trim(); if(!q) return;
+  addRecent(q);
   const ref = parseRef(q);
   if(ref){ closeSheets(); go(...ref); return; }
   const token = ++searching;

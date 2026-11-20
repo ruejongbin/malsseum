@@ -59,3 +59,8 @@ fetch('data/books.json').then(r=>r.json()).then(list=>{
   if(v===null){ const p=store.get('pos',[0,0]); if(BOOKS[p[0]]&&p[1]<BOOKS[p[0]].chapters){state.b=p[0];state.c=p[1];} go(state.b,state.c); }
   else render(v);
 }).catch(()=>{ $('#reader').innerHTML='<div class="loading">목록을 불러오지 못했어요.</div>'; });
+
+/* 내 기록 백업 · 불러오기 */
+$('#udExport').onclick=()=>{ const blob=new Blob([UD.exportJSON()],{type:'application/json'}); const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download=`말씀-내기록-${new Date().toLocaleDateString('sv')}.json`; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),2000); toast('백업 파일을 만들었어요'); };
+$('#udImport').onchange=async e=>{ const f=e.target.files[0]; if(!f) return; try{ const n=UD.importJSON(await f.text()); toast(`${n}개 기록을 불러왔어요`); render(); }catch(err){ toast(err.message||'불러오지 못했어요'); } e.target.value=''; };

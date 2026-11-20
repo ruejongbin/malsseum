@@ -1,8 +1,8 @@
 // 말씀 서비스 워커: 앱 화면은 최신 우선, 데이터·라이브러리는 한 번 받으면 저장해 두고 오프라인에서도 읽기
-const V='malsseum-v2';
+const V='malsseum-v3';
 const SHELL=['./','./index.html','./manifest.webmanifest','./icons/icon-192.png','./data/books.json',
   './css/base.css','./css/app.css','./css/design.css',
-  ...['core','reader','chrono','connect','video','viz','map','sheets','group','app','install'].map(n=>`./js/${n}.js`)];
+  ...['userdata','core','reader','chrono','connect','video','viz','map','sheets','group','app','install'].map(n=>`./js/${n}.js`)];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==V).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{
