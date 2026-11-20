@@ -1,0 +1,63 @@
+/* 말씀 — 앱 규격 · 탭 · 프로필 · 설정 */
+/* ── 앱 규격 ── */
+html,body{overscroll-behavior:none;touch-action:manipulation;-webkit-text-size-adjust:100%}
+.app{min-height:100dvh}
+button,nav,header,.tabbar,.sheet-head,.chip{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea,select{font-size:16px}
+html.is-app .app{max-width:none}
+html.inframe .tabbar{padding-bottom:24px}
+@media (display-mode: standalone){ body{-webkit-user-select:none;user-select:none} .verse .col{-webkit-user-select:text;user-select:text} }
+.install{position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom) + 76px);z-index:60;display:flex;align-items:center;gap:12px;
+  padding:12px 12px 12px 14px;border-radius:16px;background:var(--paper);color:var(--ink);box-shadow:0 12px 32px rgba(0,0,0,.18);border:1px solid var(--line);
+  max-width:520px;margin:0 auto;transform:translateY(40px);opacity:0;pointer-events:none;transition:transform .35s,opacity .35s}
+.install.show{transform:none;opacity:1;pointer-events:auto}
+.install img{width:44px;height:44px;border-radius:11px}
+.install .t{flex:1;font-size:13.5px;line-height:1.45}
+.install .t b{font-size:14.5px}
+.install .go{background:var(--brand);color:#fff;padding:9px 14px;border-radius:999px;font-weight:600;font-size:13.5px;white-space:nowrap}
+.install .x{color:var(--muted);padding:6px;font-size:15px}
+
+/* ── 1단계: 흰 배경 ── */
+@media (prefers-color-scheme:light){
+  :root{--bg:#ffffff;--paper:#ffffff;--ink:#1f2330;--muted:#8a8f9c;--line:#ececf1;--chip:#f2f3f7;--soft:#f5f6f9}
+  .ch-seg,.xr-item,.s-q,.why-v,.vz-stage,.search-box input,.inv-add input,.inv-name input{background:var(--soft)}
+}
+:root{--soft:color-mix(in srgb,var(--ink) 5%,var(--bg))}
+/* 읽기 방식 */
+.readmode{display:flex;gap:6px;padding:12px 20px 4px}
+.readmode button{padding:7px 14px;border-radius:999px;font-size:13.5px;color:var(--muted);background:var(--soft);font-weight:500}
+.readmode button.on{background:var(--brand);color:#fff}
+.readmode[hidden]{display:none}
+/* 탭 화면 */
+.tabview{flex:1;padding:28px 22px 140px}
+.tabview[hidden]{display:none}
+.soon{text-align:center;padding:36px 8px 10px}
+.soon .ic{width:84px;height:84px;margin:0 auto 16px;border-radius:26px;display:grid;place-items:center;background:color-mix(in srgb,var(--brand) 10%,var(--bg))}
+.soon .ic svg{width:44px;height:44px;stroke:var(--brand);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.soon h3{font-size:21px;margin:0 0 8px}
+.soon p{color:var(--muted);line-height:1.7;margin:0;font-size:15px}
+.soon .tag{display:inline-block;margin-top:14px;padding:5px 12px;border-radius:999px;background:var(--soft);color:var(--muted);font-size:12px}
+.plan{margin:26px 0 0;padding:0;list-style:none}
+.plan li{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:14px;background:var(--soft);margin-bottom:8px;font-size:14.5px;line-height:1.5}
+.plan li b{display:block;font-size:15px;margin-bottom:2px}
+.plan li span.e{font-size:22px;line-height:1}
+.prof-top{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.prof-top .lamp{width:64px;height:64px;border-radius:20px;display:grid;place-items:center;font-size:32px;background:color-mix(in srgb,#e0a92e 14%,var(--bg))}
+.prof-top b{font-size:19px;display:block}
+.prof-top small{color:var(--muted);font-size:13px}
+.prof-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.prof-stats div{background:var(--soft);border-radius:14px;padding:14px 8px;text-align:center}
+.prof-stats b{display:block;font-size:22px;color:var(--brand)}
+.prof-stats span{font-size:12px;color:var(--muted)}
+.prof-menu button{display:flex;align-items:center;justify-content:space-between;width:100%;padding:16px 4px;border-bottom:1px solid var(--line);font-size:15.5px;text-align:left}
+.prof-menu button::after{content:"›";color:var(--muted);font-size:20px}
+/* 글자 크기 */
+.fs-box{padding:4px 0 8px}
+.fs-row{display:flex;align-items:center;gap:12px}
+.fs-row .a{color:var(--muted)}
+.fs-row input[type=range]{flex:1;accent-color:var(--brand);height:28px}
+.fs-presets{display:flex;gap:6px;margin:12px 0}
+.fs-presets button{flex:1;padding:9px 0;border-radius:10px;background:var(--soft);font-size:13px;color:var(--muted)}
+.fs-presets button.on{background:var(--brand);color:#fff}
+.fs-preview{padding:14px 16px;border-radius:14px;background:var(--soft);font-size:var(--fs);line-height:1.75;word-break:keep-all}
+.fs-preview small{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
