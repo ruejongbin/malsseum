@@ -3,7 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>말씀 — 개역한글 · KJV 성경</title>
+<title>말씀 — 걸어서 성경 속으로</title>
+<script>
+/* 큰 화면(PC)에서는 휴대폰 틀 안에 앱을 띄운다 */
+(function(){var q=location.search,inApp=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+  if(window.top===window.self&&innerWidth>=700&&!inApp&&q.indexOf('noframe')<0) location.replace('frame.html'+location.hash);
+  if(q.indexOf('inframe')>=0||inApp) document.documentElement.classList.add('is-app');
+  if(q.indexOf('inframe')>=0) document.documentElement.classList.add('inframe');})();
+</script>
+<meta name="theme-color" content="#4f67a8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="말씀">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
@@ -457,6 +473,24 @@ svg .life{fill:color-mix(in srgb,var(--accent) 35%,transparent)}
 svg .life-lbl{fill:var(--ink);font-size:12px;font-family:var(--sans)}
 svg .now{stroke:var(--accent);stroke-width:2}
 svg .now-lbl{fill:var(--accent);font-size:12px;font-weight:700;font-family:var(--sans)}
+
+/* ── 앱 규격 ── */
+html,body{overscroll-behavior:none;touch-action:manipulation;-webkit-text-size-adjust:100%}
+.app{min-height:100dvh}
+button,nav,header,.tabbar,.sheet-head,.chip{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea,select{font-size:16px}
+html.is-app .app{max-width:none}
+html.inframe .tabbar{padding-bottom:24px}
+@media (display-mode: standalone){ body{-webkit-user-select:none;user-select:none} .verse .col{-webkit-user-select:text;user-select:text} }
+.install{position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom) + 76px);z-index:60;display:flex;align-items:center;gap:12px;
+  padding:12px 12px 12px 14px;border-radius:16px;background:var(--paper);color:var(--ink);box-shadow:0 12px 32px rgba(0,0,0,.18);border:1px solid var(--line);
+  max-width:520px;margin:0 auto;transform:translateY(40px);opacity:0;pointer-events:none;transition:transform .35s,opacity .35s}
+.install.show{transform:none;opacity:1;pointer-events:auto}
+.install img{width:44px;height:44px;border-radius:11px}
+.install .t{flex:1;font-size:13.5px;line-height:1.45}
+.install .t b{font-size:14.5px}
+.install .go{background:var(--brand);color:#fff;padding:9px 14px;border-radius:999px;font-weight:600;font-size:13.5px;white-space:nowrap}
+.install .x{color:var(--muted);padding:6px;font-size:15px}
 </style>
 </head>
 <body>
@@ -1292,6 +1326,23 @@ fetch('data/books.json').then(r=>r.json()).then(list=>{
   if(v===null){ const p=store.get('pos',[0,0]); if(BOOKS[p[0]]&&p[1]<BOOKS[p[0]].chapters){state.b=p[0];state.c=p[1];} go(state.b,state.c); }
   else render(v);
 }).catch(()=>{ $('#reader').innerHTML='<div class="loading">목록을 불러오지 못했어요.</div>'; });
+})();
+</script>
+<div class="install" id="install"><img src="icons/icon-192.png" alt=""><div class="t"><b>말씀을 앱으로 설치하기</b><br><span id="installHow">홈 화면에 추가하면 앱처럼 열려요</span></div><button class="go" id="installGo">설치</button><button class="x" id="installX" aria-label="닫기">✕</button></div>
+<script>
+/* 앱 설치(홈 화면에 추가) 안내 + 오프라인 저장 */
+(function(){
+  if('serviceWorker' in navigator) addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+  var el=document.getElementById('install'),go=document.getElementById('installGo'),how=document.getElementById('installHow'),deferred=null;
+  var inApp=matchMedia('(display-mode: standalone)').matches||navigator.standalone, framed=window.top!==window.self;
+  var seen=false; try{seen=localStorage.getItem('installSeen')==='1'}catch(e){}
+  function show(){ if(!inApp&&!framed&&!seen) setTimeout(()=>el.classList.add('show'),2500) }
+  function hide(){ el.classList.remove('show'); try{localStorage.setItem('installSeen','1')}catch(e){} }
+  addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;show()});
+  var iOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  if(iOS){ how.textContent='공유 버튼(□↑) → "홈 화면에 추가"를 눌러 주세요'; go.textContent='알겠어요'; show(); }
+  go.onclick=()=>{ if(deferred){deferred.prompt();deferred.userChoice.finally(hide)} else hide() };
+  document.getElementById('installX').onclick=hide;
 })();
 </script>
 </body>
