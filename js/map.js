@@ -4,8 +4,8 @@
 const GMAPS_KEY = '';
 function gmapSrc(P){
   return GMAPS_KEY
-    ? `https://www.google.com/maps/embed/v1/view?key=${GMAPS_KEY}&center=${P.lat},${P.lon}&zoom=14&maptype=satellite&language=ko`
-    : `https://maps.google.com/maps?q=${P.lat},${P.lon}&t=k&z=14&hl=ko&output=embed`;
+    ? `https://www.google.com/maps/embed/v1/view?key=${GMAPS_KEY}&center=${P.lat},${P.lon}&zoom=10&maptype=satellite&language=ko`
+    : `https://maps.google.com/maps?q=${P.lat},${P.lon}&t=k&z=10&hl=ko&output=embed`;
 }
 let gmPick = 0;
 function drawPlaces(body){

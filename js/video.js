@@ -16,6 +16,12 @@ $('#reader').addEventListener('pointermove', e=>{ if(lp.v && Math.hypot(e.client
 $('#reader').addEventListener('contextmenu', e=>{ if(e.target.closest('.verse')) e.preventDefault(); });
 
 let animCtl=null;
+/* 영상 소리 켜기/끄기 — 선택은 기억해 둔다 */
+const SND_ON='<svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+const SND_OFF='<svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="m17 9 5 6M22 9l-5 6"/></svg>';
+function applySound(){ const on=store.get('sound',false); const b=$('#animSound'); b.innerHTML=on?SND_ON:SND_OFF; b.setAttribute('aria-label',on?'소리 끄기':'소리 켜기');
+  $('#animStage').querySelectorAll('video,audio').forEach(v=>{ v.muted=!on; if(on) v.volume=1; }); }
+$('#animSound').onclick=e=>{ e.stopPropagation(); const on=!store.get('sound',false); store.set('sound',on); applySound(); toast(on?'소리를 켰어요':'소리를 껐어요'); };
 function playAnim(n){
   const key=`${state.b}-${state.c}-${n}`;
   const make = window.VERSE_ANIM && VERSE_ANIM[key];
@@ -27,7 +33,7 @@ function playAnim(n){
   animCtl = make(st);
   st.addEventListener('anim-done', ()=>box.classList.add('done'), {once:false});
   new MutationObserver(()=>box.classList.toggle('lit', st.classList.contains('lit'))).observe(st,{attributes:true,attributeFilter:['class']});
-  box.classList.add('show');
+  box.classList.add('show'); applySound();
 }
 function closeAnim(){ const box=$('#anim'); box.classList.remove('show'); setTimeout(()=>{ animCtl&&animCtl.stop(); animCtl=null; $('#animStage').innerHTML=''; $('#animStage').className=''; box.classList.remove('done','lit','land'); },400); }
 $('#aPlay').onclick=()=>playAnim(vz.n);
